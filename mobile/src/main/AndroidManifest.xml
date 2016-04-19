@@ -23,6 +23,10 @@
         <activity
             android:name=".WebViewers"
             android:label="@string/title_activity_web_viewers"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".potential_home"
+            android:label="@string/title_activity_potential_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
