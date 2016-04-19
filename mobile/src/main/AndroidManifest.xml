@@ -3,6 +3,7 @@
     package="edu.mit.outnabout">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,8 @@
             android:name=".WebViewers"
             android:label="@string/title_activity_web_viewers"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <service android:name=".GeofenceTransitionsIntentService" />
     </application>
 
 </manifest>
