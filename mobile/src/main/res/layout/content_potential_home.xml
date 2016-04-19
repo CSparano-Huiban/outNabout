@@ -12,19 +12,9 @@
     tools:context="edu.mit.outnabout.potential_home"
     tools:showIn="@layout/activity_potential_home">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What am I near?"
-        android:id="@+id/button"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="searchNearMe"/>
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_below="@+id/button"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

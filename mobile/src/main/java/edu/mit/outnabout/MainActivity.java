@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements
     public void moveToMaps(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
+    }
         
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the LocationServices API.
@@ -330,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements
             mAddGeofencesButton.setEnabled(true);
             mRemoveGeofencesButton.setEnabled(false);
         }
->>>>>>> 3db7b2f4623977271a7fa88064605dbee8f2f6d2
+
     }
 
     @Override
