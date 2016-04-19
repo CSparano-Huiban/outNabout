@@ -27,6 +27,6 @@ public class potential_home extends AppCompatActivity {
     }
 
     public void searchNearMe(View view) {
-        
+
     }
 }

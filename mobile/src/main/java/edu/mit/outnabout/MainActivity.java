@@ -1,5 +1,6 @@
 package edu.mit.outnabout;
 
+import android.content.Intent;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -99,12 +100,18 @@ public class MainActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Intent intent = new Intent(this, MapsActivity.class);
+//                startActivity(intent);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
     }
 
+    public void moveToMaps(View view) {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+        
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the LocationServices API.
      */
@@ -323,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements
             mAddGeofencesButton.setEnabled(true);
             mRemoveGeofencesButton.setEnabled(false);
         }
+>>>>>>> 3db7b2f4623977271a7fa88064605dbee8f2f6d2
     }
 
     @Override
