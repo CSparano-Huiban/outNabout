@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">OutNAbout</string>
     <string name="action_settings">Settings</string>
+<<<<<<< HEAD
     <string name="title_activity_maps">Map</string>
+=======
+    <string name="title_activity_web_viewers">WebViewers</string>
+>>>>>>> 3db7b2f4623977271a7fa88064605dbee8f2f6d2
 </resources>

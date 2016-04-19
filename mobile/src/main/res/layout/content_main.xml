@@ -12,8 +12,12 @@
     tools:context="edu.mit.outnabout.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="New Button"
+        android:id="@+id/launchWebViewers"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="startWebView"/>
 </RelativeLayout>
