@@ -18,7 +18,7 @@
         android:text="Google it"
         android:id="@+id/googleButton"
         android:onClick="googleClick"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/locationDescription"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" />
 
@@ -29,8 +29,8 @@
         android:id="@+id/wikiButton"
         android:onClick="wikiClick"
         android:layout_below="@+id/googleButton"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2" />
+        android:layout_alignLeft="@+id/locationDescription"
+        android:layout_alignStart="@+id/locationDescription" />
 
     <Button
         android:layout_width="wrap_content"
@@ -46,16 +46,16 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/textView"
+        android:id="@+id/locationTitle"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true" />
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:id="@+id/imageView"
+        android:id="@+id/locationImage"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/locationTitle"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -63,8 +63,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/imageView"
+        android:id="@+id/locationDescription"
+        android:layout_below="@+id/locationImage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
