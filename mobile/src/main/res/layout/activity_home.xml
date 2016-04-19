@@ -55,4 +55,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="moveToMaps" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Debug Notification"
+        android:id="@+id/button3"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        android:onClick="notify" />
 </RelativeLayout>
