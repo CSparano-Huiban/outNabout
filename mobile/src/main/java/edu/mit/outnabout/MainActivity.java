@@ -1,12 +1,9 @@
 package edu.mit.outnabout;
 
-<<<<<<< HEAD
 import android.content.Intent;
-=======
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
->>>>>>> 3db7b2f4623977271a7fa88064605dbee8f2f6d2
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -111,11 +108,10 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-<<<<<<< HEAD
     public void moveToMaps(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
-=======
+        
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the LocationServices API.
      */
