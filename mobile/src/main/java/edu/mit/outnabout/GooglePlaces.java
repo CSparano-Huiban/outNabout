@@ -76,6 +76,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+                if (likelyPlaces.getCount() > 0){
                 PlaceLikelihood best = likelyPlaces.get(0);
 
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
@@ -86,13 +87,16 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                             placeLikelihood.getPlace().getName(),
                             placeLikelihood.getLikelihood()));
                 }
-                //best = likelyPlaces.get(1);
+                    if (likelyPlaces.getCount()>1) {
+                        best = likelyPlaces.get(1);
+                    }
                 Place frozen = best.getPlace().freeze();
                 TextView text = (TextView) findViewById(R.id.textView);
                 text.setText(frozen.getName());
                 placePhotosTask(frozen.getId());
                 //photo(frozen);
                 likelyPlaces.release();
+            }
             }
         });
 
