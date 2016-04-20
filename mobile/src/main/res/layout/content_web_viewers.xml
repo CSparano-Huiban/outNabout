@@ -29,8 +29,7 @@
         android:id="@+id/wikiButton"
         android:onClick="wikiClick"
         android:layout_below="@+id/googleButton"
-        android:layout_alignLeft="@+id/locationDescription"
-        android:layout_alignStart="@+id/locationDescription" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
