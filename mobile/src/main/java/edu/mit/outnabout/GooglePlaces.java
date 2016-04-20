@@ -22,7 +22,6 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
@@ -121,7 +120,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
 
     private void placePhotosTask(String input) {
         final String placeId = input; // Australian Cruise Group
-        final ImageView mImageView = (ImageView) findViewById(R.id.imageView);
+        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
         new PhotoTask(mImageView.getWidth(), mImageView.getHeight()) {
             @Override

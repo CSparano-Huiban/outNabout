@@ -47,6 +47,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.mit.outnabout.HomeActivity" />
         </activity>
+
+        <activity
+            android:name=".GooglePlaces"
+            android:label="GP">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.mit.outnabout.HomeActivity" />
+        </activity>
+
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

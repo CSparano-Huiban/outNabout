@@ -55,10 +55,12 @@ public class HomeActivity extends AppCompatActivity {
                         .extend(new NotificationCompat.WearableExtender().setBackground(bmp));
         */
 
+        getPlace();
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification_icon)
-                        .setContentTitle(hardcodedTitle)
+                        .setContentTitle(name)
                         .setContentText(hardcodedContent)
                         .setLargeIcon(bmp)
                         .setPriority(1) // High Priority: should enable heads-up notification

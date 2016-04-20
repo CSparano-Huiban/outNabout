@@ -32,16 +32,22 @@ import com.google.android.gms.location.places.PlacePhotoMetadata;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class potential_home extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    List<String> messageList;
+    List<String> nameList;
+    List<String> idList;
+    List<LatLng> latLongList;
+//    List<Bitmap> imageList;
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = GooglePlaces.class.getSimpleName();
 
@@ -52,6 +58,15 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
+        find();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,12 +76,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
             }
         });
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
+
     }
 
     @Override
@@ -87,14 +97,18 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
 
         List<String> places = new ArrayList<String>();
 
-        messageList = new ArrayList<String>();
+        nameList = new ArrayList<String>();
+        idList = new ArrayList<String>();
+        latLongList = new ArrayList<LatLng>();
+//        imageList = new ArrayList<Bitmap>();
+
 
         ArrayAdapter<String> resultsAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,places);
 
         String placeName;
         String placeId;
-        find();
+        Bitmap placeImage;
         if (results != null) {
 
             for (int i = 0; i < Math.min(results.size(), 5); i++) {
@@ -102,9 +116,15 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                     Place currentPlace = (Place) results.get(i);
                     //JSONObject tempJsonParse = currentPlace.getJSONObject("fields");
                     placeName = (String) currentPlace.getName();
-                    placeId = currentPlace.getId();
+                    placeId = (String) currentPlace.getId();
+                    LatLng latLong = currentPlace.getLatLng();
+
+//                    placeImage = currentPlace.;
                     places.add(placeName);
-                    messageList.add(placeId);
+                    nameList.add(placeName);
+                    idList.add(placeId);
+                    latLongList.add(latLong);
+//                    imageList.add(placeImage);
 
                 } catch (Exception e) {
                     Log.e("Json Error", e.getMessage());
@@ -120,8 +140,21 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(tempThis, WebViewers.class);
-                String currPlaceId = messageList.get(position);
+                String currPlaceName = nameList.get(position);
+                String currPlaceId = idList.get(position);
+                LatLng currLatLong = latLongList.get(position);
+//                Bitmap currPlaceImage = imageList.get(position);
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                currPlaceImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                byte[] byteArray = stream.toByteArray();
+
+                intent.putExtra("place_name", currPlaceName);
                 intent.putExtra("place_id", currPlaceId);
+                intent.putExtra("place_lat", currLatLong.latitude);
+                intent.putExtra("place_long", currLatLong.longitude);
+
+//                intent.putExtra("image",byteArray);
+
                 startActivity(intent);
             }
         });
@@ -146,7 +179,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
                 results.clear();
-                if (likelyPlaces.getCount() > 0){
+                if (likelyPlaces.getCount() > 0) {
                     PlaceLikelihood best = likelyPlaces.get(0);
 
                     for (PlaceLikelihood placeLikelihood : likelyPlaces) {
@@ -155,23 +188,24 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                                 placeLikelihood.getPlace().getName(),
                                 placeLikelihood.getLikelihood()));
                     }
-                    if (likelyPlaces.getCount()>1) {
+                    if (likelyPlaces.getCount() > 1) {
                         best = likelyPlaces.get(1);
                     }
-                   // Place frozen = best.getPlace().freeze();
+                    // Place frozen = best.getPlace().freeze();
                     //TextView text = (TextView) findViewById(R.id.textView);
                     //text.setText(frozen.getName());
                     //placePhotosTask(frozen.getId());
                     //photo(frozen);
                     likelyPlaces.release();
                 }
+                searchNearMeSetUp();
             }
         });
 
     }
     private void placePhotosTask(String input) {
         final String placeId = input; // Australian Cruise Group
-        final ImageView mImageView = (ImageView) findViewById(R.id.imageView);
+        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
         new PhotoTask(mImageView.getWidth(), mImageView.getHeight()) {
             @Override
