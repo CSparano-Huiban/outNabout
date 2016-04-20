@@ -42,8 +42,18 @@ public class HomeActivity extends AppCompatActivity {
     }//onActivityResult
 
     public void notify(View view) {
-
+        getPlace();
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.stata);
+      /*  NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.notification_icon)
+                        .setContentTitle(name)
+                        .setContentText(hardcodedContent)
+                        .setLargeIcon(photo)
+                        .setPriority(1) // High Priority: should enable heads-up notification
+                        .setColor(Color.argb(0,50, 200, 200))
+                        .extend(new NotificationCompat.WearableExtender().setBackground(bmp));
+        */
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
