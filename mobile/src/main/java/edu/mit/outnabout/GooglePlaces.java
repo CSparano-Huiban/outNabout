@@ -1,6 +1,7 @@
 package edu.mit.outnabout;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -27,13 +28,16 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+
 
 public class GooglePlaces extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = GooglePlaces.class.getSimpleName();
-
+    private String name = null;
+    private Bitmap placePhoto = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+        done();
     }
 
 
@@ -56,8 +61,21 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
 
         // ...
     }
+    public void done(){
+        find();
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("name", name);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-    public void find(View view) {
+        placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        returnIntent.putExtra("photo", byteArray);
+        setResult(RESULT_OK, returnIntent);
+        finish();
+    }
+
+
+    public void find() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -77,29 +95,27 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
                 if (likelyPlaces.getCount() > 0){
-                PlaceLikelihood best = likelyPlaces.get(0);
-
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    if (best.getLikelihood() < placeLikelihood.getLikelihood()){
-                        best = placeLikelihood;
-                    }
-                    Log.i(TAG, String.format("Place '%s' has likelihood: %g",
+                    PlaceLikelihood best = likelyPlaces.get(0);
+                    for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                        if (best.getLikelihood() < placeLikelihood.getLikelihood()){
+                            best = placeLikelihood;
+                        }
+                        Log.i(TAG, String.format("Place '%s' has likelihood: %g",
                             placeLikelihood.getPlace().getName(),
                             placeLikelihood.getLikelihood()));
-                }
+                    }
                     if (likelyPlaces.getCount()>1) {
                         best = likelyPlaces.get(1);
                     }
-                Place frozen = best.getPlace().freeze();
-                TextView text = (TextView) findViewById(R.id.textView);
-                text.setText(frozen.getName());
-                placePhotosTask(frozen.getId());
-                //photo(frozen);
-                likelyPlaces.release();
-            }
+                    Place frozen = best.getPlace().freeze();
+                  //  TextView text = (TextView) findViewById(R.id.textView);
+                  //  text.setText(frozen.getName());
+                    name = (String)frozen.getName();
+                    placePhotosTask(frozen.getId());
+                    likelyPlaces.release();
+                }
             }
         });
-
     }
 
 
@@ -118,16 +134,15 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null) {
                     // Photo has been loaded, display it.
-                    mImageView.setImageBitmap(attributedPhoto.bitmap);
-
+                //    mImageView.setImageBitmap(attributedPhoto.bitmap);
+                    placePhoto = attributedPhoto.bitmap;
                     // Display the attribution as HTML content if set.
                  /*  if (attributedPhoto.attribution == null) {
                        mText.setVisibility(View.GONE);
                    } else {
                        mText.setVisibility(View.VISIBLE);
                        mText.setText(Html.fromHtml(attributedPhoto.attribution.toString()));
-                   }
-*/
+                   }*/
                 }
             }
         }.execute(placeId);
@@ -135,7 +150,6 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
     abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
 
         private int mHeight;
-
         private int mWidth;
 
         public PhotoTask(int width, int height) {
@@ -180,9 +194,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
          * Holder for an image and its attribution.
          */
         class AttributedPhoto {
-
             public final CharSequence attribution;
-
             public final Bitmap bitmap;
 
             public AttributedPhoto(CharSequence attribution, Bitmap bitmap) {

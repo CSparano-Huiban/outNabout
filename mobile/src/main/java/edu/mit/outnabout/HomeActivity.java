@@ -1,5 +1,6 @@
 package edu.mit.outnabout;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,12 +15,31 @@ public class HomeActivity extends AppCompatActivity {
 
     String hardcodedTitle = "New Location Found!";
     String hardcodedContent = "The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
+    String name;
+    Bitmap photo;
 
 
     public void moveToMaps(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
+
     }
+    // call this method in order for google places to set the name and photo global variable
+    public void getPlace(){
+        Intent intent = new Intent(this, GooglePlaces.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                name = data.getStringExtra("name");
+                byte[] byteArray = getIntent().getByteArrayExtra("photo");
+                photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            }
+        }
+    }//onActivityResult
 
     public void notify(View view) {
 
