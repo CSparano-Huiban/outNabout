@@ -45,10 +45,12 @@ public class HomeActivity extends AppCompatActivity {
 
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.stata);
 
+        getPlace();
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification_icon)
-                        .setContentTitle(hardcodedTitle)
+                        .setContentTitle(name)
                         .setContentText(hardcodedContent)
                         .setLargeIcon(bmp)
                         .setPriority(1) // High Priority: should enable heads-up notification

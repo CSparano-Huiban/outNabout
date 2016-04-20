@@ -72,7 +72,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     public void displayDefaults(){
         titleTextView.setText(currentLocation);
         descriptionTextView.setText(currentDescription);
-        currentLocationImage = BitmapFactory.decodeResource(getResources(), R.drawable.MIT);
+        currentLocationImage = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
         locationImage.setImageBitmap(currentLocationImage);
     }
 
