@@ -15,25 +15,28 @@
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="195dp" />
+        android:layout_marginBottom="106dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/locationImage"
-        android:layout_alignBottom="@+id/button"
+
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/button"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="73dp" />
+        android:scaleType="fitXY" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:id="@+id/locationTitle"
-        android:layout_above="@+id/locationImage"
+        android:id="@+id/textView"
         android:layout_alignRight="@+id/button"
         android:layout_alignEnd="@+id/button"
-        android:layout_marginBottom="42dp" />
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button"
+        android:layout_above="@+id/imageView" />
 </RelativeLayout>
