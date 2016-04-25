@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,9 +84,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
         currentLatitude = String.valueOf(extras.getDouble("place_lat"));
         currentLongitude = String.valueOf(extras.getDouble("place_long"));
 
-//        byte[] byteArray = getIntent().getByteArrayExtra("image");
-//        currentLocationImage = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
         //TODO: need to set discription
 
         currentDescription = currentLocation + " is the best place in all of boston";
@@ -119,10 +117,13 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     }
 
     private void placePhotosTask(String input) {
+        Log.v("I hate the world", input);
         final String placeId = input; // Australian Cruise Group
 //        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
-        new PhotoTask(locationImage.getWidth(), locationImage.getHeight()) {
+        Log.v("I hate the world", String.valueOf(locationImage.getWidth()));
+        Log.v("I hate the world", String.valueOf(locationImage.getHeight()));
+        new PhotoTask(200, 200) {
             @Override
             protected void onPreExecute() {
                 // Display a temporary image to show while bitmap is loading.
@@ -132,6 +133,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null) {
+                    Log.v("I hate the world", "This sucks");
                     // Photo has been loaded, display it.
                     locationImage.setImageBitmap(attributedPhoto.bitmap);
 
