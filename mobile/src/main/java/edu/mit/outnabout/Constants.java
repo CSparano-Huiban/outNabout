@@ -75,5 +75,8 @@ public final class Constants {
 
         // Flour Bakery
         CAMBRIDGE_LANDMARKS.put("Flour Bakery", new LatLng(42.361033, -71.096784));
+
+        // Building 34
+        CAMBRIDGE_LANDMARKS.put("Building 34", new LatLng(42.361350, -71.091863));
     }
 }
