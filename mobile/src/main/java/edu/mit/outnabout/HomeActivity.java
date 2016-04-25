@@ -36,7 +36,12 @@ public class HomeActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 name = data.getStringExtra("name");
                 byte[] byteArray = getIntent().getByteArrayExtra("photo");
-                photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                if(byteArray != null){
+                    photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                }else{
+                    photo = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
+                }
+
 
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(this)

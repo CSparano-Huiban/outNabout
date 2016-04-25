@@ -115,9 +115,9 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
 
     private void placePhotosTask(String input) {
         final String placeId = input; // Australian Cruise Group
-        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
+//        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
-        new PhotoTask(mImageView.getWidth(), mImageView.getHeight()) {
+        new PhotoTask(200, 200) {
             @Override
             protected void onPreExecute() {
                 // Display a temporary image to show while bitmap is loading.
@@ -126,6 +126,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
 
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
+                Log.v("I hate the world", "I retruned a photo");
                 if (attributedPhoto != null) {
                     // Photo has been loaded, display it.
                 //    mImageView.setImageBitmap(attributedPhoto.bitmap);
