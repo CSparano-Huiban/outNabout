@@ -107,13 +107,10 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     }
 
     public void mapClick(View view) {
-        String uriString = "geo:" + currentLatitude + ","+ currentLongitude + "?z=15";
-        Uri geoUri =  Uri.parse(uriString);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoUri);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
+        String uriString = String.format("geo:0,0?q=" + currentLatitude + ","+ currentLongitude);
+        Log.v("I hate the world",uriString);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
+        startActivity(intent);
     }
 
     private void placePhotosTask(String input) {
@@ -123,7 +120,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
         Log.v("I hate the world", String.valueOf(locationImage.getWidth()));
         Log.v("I hate the world", String.valueOf(locationImage.getHeight()));
-        new PhotoTask(200, 200) {
+        new PhotoTask(500, 500) {
             @Override
             protected void onPreExecute() {
                 // Display a temporary image to show while bitmap is loading.
@@ -136,6 +133,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                     Log.v("I hate the world", "This sucks");
                     // Photo has been loaded, display it.
                     locationImage.setImageBitmap(attributedPhoto.bitmap);
+
 
                     // Display the attribution as HTML content if set.
                  /*  if (attributedPhoto.attribution == null) {

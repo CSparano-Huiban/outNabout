@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
-        
+
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the LocationServices API.
      */

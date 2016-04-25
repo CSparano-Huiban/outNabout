@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.mit.outnabout.HomeActivity">
+    tools:context="edu.mit.outnabout.HomeActivity"
+    android:background="@drawable/hero">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,7 +17,8 @@
         android:id="@+id/locationTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="28dp" />
+        android:textSize="28dp"
+        android:textColor="#000000" />
 
     <Button
         android:layout_width="wrap_content"
@@ -24,7 +26,8 @@
         android:text="Begin Exploring"
         android:id="@+id/button"
         android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/achevButton"
+        android:layout_alignStart="@+id/achevButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -32,9 +35,9 @@
         android:text="What&apos;s Near Me"
         android:id="@+id/button2"
         android:onClick="moveToMaps"
-        android:layout_above="@+id/achevButton"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button" />
 
     <Button
         android:layout_width="wrap_content"
@@ -42,14 +45,16 @@
         android:text="Debug Notification"
         android:id="@+id/button3"
         android:onClick="notify"
-        android:layout_below="@+id/locationTitle"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/achevButton"
+        android:layout_alignStart="@+id/achevButton" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="What have I seen?"
         android:id="@+id/achevButton"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/button2"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
