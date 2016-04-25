@@ -37,6 +37,9 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
     private static final String TAG = GooglePlaces.class.getSimpleName();
     private String name = null;
     private Bitmap placePhoto = null;
+    private Intent returnIntent = new Intent();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,15 +65,6 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
     }
     public void done(){
         find();
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("name", name);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        returnIntent.putExtra("photo", byteArray);
-        setResult(RESULT_OK, returnIntent);
-        finish();
     }
 
 
@@ -110,6 +104,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                   //  TextView text = (TextView) findViewById(R.id.textView);
                   //  text.setText(frozen.getName());
                     name = (String)frozen.getName();
+                    returnIntent.putExtra("name", name);
                     placePhotosTask(frozen.getId());
                     likelyPlaces.release();
                 }
@@ -135,6 +130,13 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                     // Photo has been loaded, display it.
                 //    mImageView.setImageBitmap(attributedPhoto.bitmap);
                     placePhoto = attributedPhoto.bitmap;
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                    placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    returnIntent.putExtra("photo", byteArray);
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
                     // Display the attribution as HTML content if set.
                  /*  if (attributedPhoto.attribution == null) {
                        mText.setVisibility(View.GONE);
@@ -142,6 +144,9 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                        mText.setVisibility(View.VISIBLE);
                        mText.setText(Html.fromHtml(attributedPhoto.attribution.toString()));
                    }*/
+                }else{
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
                 }
             }
         }.execute(placeId);

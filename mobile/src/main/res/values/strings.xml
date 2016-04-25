@@ -32,4 +32,6 @@
     <string name="unknown_geofence_transition">Unknown Transition</string>
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
+
+    <string name="google_app_id">81656790962</string>
 </resources>

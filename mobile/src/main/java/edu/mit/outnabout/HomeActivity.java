@@ -37,32 +37,29 @@ public class HomeActivity extends AppCompatActivity {
                 name = data.getStringExtra("name");
                 byte[] byteArray = getIntent().getByteArrayExtra("photo");
                 photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(R.drawable.notification_icon)
+                                .setContentTitle(name)
+                                .setContentText(hardcodedContent)
+                                .setLargeIcon(photo)
+                                .setPriority(1) // High Priority: should enable heads-up notification
+                                .setColor(Color.argb(0,50, 200, 200))
+                                .extend(new NotificationCompat.WearableExtender().setBackground(photo));
+
+                // Set an ID for the notification
+                int mNotificationId = 001;
+                // Gets an instance of the NotificationManager service
+                NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                // Builds the notification and issues it.
+                mNotifyMgr.notify(mNotificationId, mBuilder.build());
             }
         }
     }//onActivityResult
 
     public void notify(View view) {
-
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.stata);
-
         getPlace();
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.notification_icon)
-                        .setContentTitle(name)
-                        .setContentText(hardcodedContent)
-                        .setLargeIcon(bmp)
-                        .setPriority(1) // High Priority: should enable heads-up notification
-                        .setColor(Color.argb(0,50, 200, 200))
-                        .extend(new NotificationCompat.WearableExtender().setBackground(bmp));
-
-        // Set an ID for the notification
-        int mNotificationId = 001;
-        // Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
     @Override
