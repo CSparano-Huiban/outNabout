@@ -3,7 +3,6 @@
     package="edu.mit.outnabout">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -47,6 +46,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.mit.outnabout.HomeActivity" />
         </activity>
+
+        <activity
+            android:name=".GooglePlaces"
+            android:label="GP">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.mit.outnabout.HomeActivity" />
+        </activity>
+
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

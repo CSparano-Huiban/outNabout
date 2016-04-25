@@ -45,7 +45,7 @@ public final class Constants {
      */
     public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
-    public static final float GEOFENCE_RADIUS_IN_METERS = 200; // 1 mile, 1.6 km
+    public static final float GEOFENCE_RADIUS_IN_METERS = 50; // in meters
 
     /**
      * Map for storing information about airports in the San Francisco bay area.
@@ -53,15 +53,27 @@ public final class Constants {
     public static final HashMap<String, LatLng> CAMBRIDGE_LANDMARKS = new HashMap<String, LatLng>();
     static {
         // WILG
-        CAMBRIDGE_LANDMARKS.put("WILG", new LatLng(42.363013, -71.099261));
+        CAMBRIDGE_LANDMARKS.put("WILG", new LatLng(42.363023, -71.099263));
 
         // MIT Museum
-        CAMBRIDGE_LANDMARKS.put("MIT Museum", new LatLng(42.362275,-71.097658));
+        CAMBRIDGE_LANDMARKS.put("MIT Museum", new LatLng(42.362095, -71.097568));
 
         // 77 Mass Ave
-        CAMBRIDGE_LANDMARKS.put("77 Mass Ave", new LatLng(42.3591,-71.0934));
+        CAMBRIDGE_LANDMARKS.put("77 Mass Ave", new LatLng(42.359178, -71.093137));
 
         // Cambridge City Hall
-        CAMBRIDGE_LANDMARKS.put("Cambridge City Hall", new LatLng(42.3672,-71.1057));
+        CAMBRIDGE_LANDMARKS.put("Cambridge City Hall", new LatLng(42.367002, -71.105840));
+
+        // Stata Center
+        CAMBRIDGE_LANDMARKS.put("Stata Center", new LatLng(42.361667, -71.090680));
+
+        // Student Center
+        CAMBRIDGE_LANDMARKS.put("Student Center", new LatLng(42.359043, -71.094746));
+
+        // Lobby 10
+        CAMBRIDGE_LANDMARKS.put("Lobby 10", new LatLng(42.359558, -71.091967));
+
+        // Flour Bakery
+        CAMBRIDGE_LANDMARKS.put("Flour Bakery", new LatLng(42.361033, -71.096784));
     }
 }
