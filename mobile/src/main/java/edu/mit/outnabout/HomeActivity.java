@@ -20,7 +20,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void moveToMaps(View view) {
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, potential_home.class);
         startActivity(intent);
 
     }
