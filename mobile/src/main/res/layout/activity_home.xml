@@ -23,11 +23,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Begin Exploring"
-        android:id="@+id/button"
+        android:text="@string/geofence_start_text"
+        android:id="@+id/geofence_button"
         android:layout_above="@+id/button2"
-        android:layout_alignLeft="@+id/achevButton"
-        android:layout_alignStart="@+id/achevButton" />
+        android:layout_centerHorizontal="true"
+        android:onClick="toggleGeofence"/>
+
 
     <Button
         android:layout_width="wrap_content"
