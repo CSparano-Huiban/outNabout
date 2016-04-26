@@ -12,7 +12,7 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:id="@+id/imageView2"
+            android:id="@+id/acheveImage"
             android:paddingRight="15dp" />
 
         <LinearLayout
@@ -32,21 +32,21 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="1/10 historic"
-                android:id="@+id/textView4" />
+                android:id="@+id/historicSeen" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="1/10 modern"
-                android:id="@+id/textView5" />
+                android:id="@+id/modernSeen" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="2/150 total"
-                android:id="@+id/textView6" />
+                android:id="@+id/totalSeen" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
