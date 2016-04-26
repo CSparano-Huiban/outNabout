@@ -102,7 +102,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
 
         //TODO: need to set discription
 
-        currentDescription = "Our description for " + currentLocation + "is not available yet please use the google button below to learn more";
+        currentDescription = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
         titleTextView.setText(currentLocation);
         descriptionTextView.setText(currentDescription);
         getWebResult();
@@ -293,7 +293,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             JSONObject foodEntries;
             JSONObject page;
             JSONObject pageFromId;
-            String description = "canned";
+            String description = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";;
 
             // separate this out so people can work on it.
             try {
