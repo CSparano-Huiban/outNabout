@@ -67,6 +67,8 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
 
         find();
 
+        Log.v("I hate this shit","I am doing something");
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +88,8 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
         // the failure silently
 
         // ...
+        Log.v("I hate this shit","I have failed you");
+        Log.v("I hate this shit",connectionResult.toString());
     }
 
     ArrayList<Place> results = new ArrayList<Place>();
@@ -198,6 +202,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                     //photo(frozen);
                     likelyPlaces.release();
                 }
+                Log.v("Booooo",likelyPlaces.toString());
                 searchNearMeSetUp();
             }
         });
