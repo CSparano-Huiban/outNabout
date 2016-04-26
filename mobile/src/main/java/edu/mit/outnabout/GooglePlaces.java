@@ -48,7 +48,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-        done();
+      //  done();
     }
 
 
@@ -61,20 +61,15 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
         // ...
     }
     public void done(){
-        find();
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("name", name);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        returnIntent.putExtra("photo", byteArray);
-        setResult(RESULT_OK, returnIntent);
-        finish();
+        getData();
+    }
+    public void find (View view ){
+        getData();
+       // finish();
     }
 
 
-    public void find() {
+    public void getData() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -107,10 +102,17 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                         best = likelyPlaces.get(1);
                     }
                     Place frozen = best.getPlace().freeze();
-                  //  TextView text = (TextView) findViewById(R.id.textView);
-                  //  text.setText(frozen.getName());
+                    TextView text = (TextView) findViewById(R.id.placesTextView);
+                    text.setText(frozen.getName());
                     name = (String)frozen.getName();
                     placePhotosTask(frozen.getId());
+                    //Intent returnIntent = new Intent();
+                    //returnIntent.putExtra("name", name);
+                    //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    //placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    //byte[] byteArray = stream.toByteArray();
+                    //returnIntent.putExtra("photo", byteArray);
+                    //setResult(RESULT_OK, returnIntent);
                     likelyPlaces.release();
                 }
             }
@@ -120,7 +122,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
 
     private void placePhotosTask(String input) {
         final String placeId = input; // Australian Cruise Group
-        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
+        final ImageView mImageView = (ImageView) findViewById(R.id.placesImageView);
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
         new PhotoTask(mImageView.getWidth(), mImageView.getHeight()) {
             @Override
@@ -133,8 +135,8 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null) {
                     // Photo has been loaded, display it.
-                //    mImageView.setImageBitmap(attributedPhoto.bitmap);
-                    placePhoto = attributedPhoto.bitmap;
+                    mImageView.setImageBitmap(attributedPhoto.bitmap);
+                //    placePhoto = attributedPhoto.bitmap;
                     // Display the attribution as HTML content if set.
                  /*  if (attributedPhoto.attribution == null) {
                        mText.setVisibility(View.GONE);

@@ -34,8 +34,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
-                name = data.getStringExtra("name");
-                byte[] byteArray = getIntent().getByteArrayExtra("photo");
+                Bundle extras = getIntent().getExtras();
+                name = extras.getString("name");
+                byte[] byteArray = extras.getByteArray("photo");
                 photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             }
         }
@@ -44,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     public void notify(View view) {
         getPlace();
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.stata);
-      /*  NotificationCompat.Builder mBuilder =
+        NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification_icon)
                         .setContentTitle(name)
@@ -53,10 +54,9 @@ public class HomeActivity extends AppCompatActivity {
                         .setPriority(1) // High Priority: should enable heads-up notification
                         .setColor(Color.argb(0,50, 200, 200))
                         .extend(new NotificationCompat.WearableExtender().setBackground(bmp));
-        */
 
-        getPlace();
 
+/*
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification_icon)
@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                         .setPriority(1) // High Priority: should enable heads-up notification
                         .setColor(Color.argb(0,50, 200, 200))
                         .extend(new NotificationCompat.WearableExtender().setBackground(bmp));
-
+                        */
         // Set an ID for the notification
         int mNotificationId = 001;
         // Gets an instance of the NotificationManager service
