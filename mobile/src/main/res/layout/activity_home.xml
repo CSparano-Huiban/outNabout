@@ -81,7 +81,8 @@
             android:layout_below="@+id/button2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:onClick="acheveClicked" />
     </LinearLayout>
 
 </RelativeLayout>
