@@ -56,8 +56,6 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_potential_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -78,17 +76,10 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                         .setAction("Action", null).show();
             }
         });
-
-
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and a connection to Google APIs
-        // could not be established. Display an error message, or handle
-        // the failure silently
-
-        // ...
     }
 
     ArrayList<Place> results = new ArrayList<Place>();
@@ -104,10 +95,6 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
         idList = new ArrayList<String>();
         latLongList = new ArrayList<LatLng>();
         addressList = new ArrayList<String>();
-
-
-//        ArrayAdapter<String> resultsAdapter =
-//                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,places);
 
         String placeName;
         String placeId;
@@ -134,9 +121,9 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                     e.printStackTrace();
                 }
 
-            }  // end the for loop
-
+            }
             nearMeCustomList listAdapter = new nearMeCustomList(this, nameList, addressList, idList, mGoogleApiClient);
+
             theListView.setAdapter(listAdapter);
         }
 
@@ -192,7 +179,6 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                     }
                     likelyPlaces.release();
                 }
-                Log.v("Booooo",likelyPlaces.toString());
                 searchNearMeSetUp();
             }
         });
@@ -214,15 +200,6 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                 if (attributedPhoto != null) {
                     // Photo has been loaded, display it.
                     mImageView.setImageBitmap(attributedPhoto.bitmap);
-
-                    // Display the attribution as HTML content if set.
-                 /*  if (attributedPhoto.attribution == null) {
-                       mText.setVisibility(View.GONE);
-                   } else {
-                       mText.setVisibility(View.VISIBLE);
-                       mText.setText(Html.fromHtml(attributedPhoto.attribution.toString()));
-                   }
-*/
                 }
             }
         }.execute(placeId);

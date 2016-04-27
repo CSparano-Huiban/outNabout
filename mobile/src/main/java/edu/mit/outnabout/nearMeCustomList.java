@@ -6,6 +6,7 @@ package edu.mit.outnabout;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -65,6 +66,8 @@ public class nearMeCustomList extends ArrayAdapter<String> implements GoogleApiC
         new PhotoTask(100, 100) {
             @Override
             protected void onPreExecute() {
+                Bitmap currBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholderimage);
+                cellImageView.setImageBitmap(currBitmap);
             }
 
             @Override

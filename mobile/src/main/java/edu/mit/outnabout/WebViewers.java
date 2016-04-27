@@ -129,6 +129,9 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
 
             @Override
             protected void onPreExecute() {
+                currentLocationImage = BitmapFactory.decodeResource(getResources(), R.drawable.placeholderimage);
+                locationImage.setImageBitmap(currentLocationImage);
+                Log.v("I hate the world", "I am trying to work on photos");
             }
 
             @Override
@@ -210,6 +213,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             e.printStackTrace();
         }
         if (encodedInput != null) {
+            Log.v("I hate the world", "I am trying to work on wiki");
             apiUrl = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + encodedInput;
             new CallAPI().execute(apiUrl);
         }
