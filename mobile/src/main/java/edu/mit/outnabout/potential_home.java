@@ -47,6 +47,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
     List<String> nameList;
     List<String> idList;
     List<LatLng> latLongList;
+    List<String> addressList;
 //    List<Bitmap> imageList;
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = GooglePlaces.class.getSimpleName();
@@ -55,8 +56,6 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_potential_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -78,18 +77,10 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
             }
         });*/
 
-
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and a connection to Google APIs
-        // could not be established. Display an error message, or handle
-        // the failure silently
-
-        // ...
-        Log.v("I hate this shit","I have failed you");
-        Log.v("I hate this shit",connectionResult.toString());
     }
 
     ArrayList<Place> results = new ArrayList<Place>();
@@ -104,39 +95,37 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
         nameList = new ArrayList<String>();
         idList = new ArrayList<String>();
         latLongList = new ArrayList<LatLng>();
-//        imageList = new ArrayList<Bitmap>();
-
-
-        ArrayAdapter<String> resultsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,places);
+        addressList = new ArrayList<String>();
 
         String placeName;
         String placeId;
-        Bitmap placeImage;
+
         if (results != null) {
 
             for (int i = 0; i < Math.min(results.size(), 5); i++) {
                 try {
                     Place currentPlace = (Place) results.get(i);
-                    //JSONObject tempJsonParse = currentPlace.getJSONObject("fields");
+                    currentPlace.getAddress();
                     placeName = (String) currentPlace.getName();
                     placeId = (String) currentPlace.getId();
                     LatLng latLong = currentPlace.getLatLng();
 
-//                    placeImage = currentPlace.;
                     places.add(placeName);
                     nameList.add(placeName);
                     idList.add(placeId);
                     latLongList.add(latLong);
-//                    imageList.add(placeImage);
+                    addressList.add(currentPlace.getAddress().toString());
+
 
                 } catch (Exception e) {
                     Log.e("Json Error", e.getMessage());
                     e.printStackTrace();
                 }
 
-            }  // end the for loop
-            theListView.setAdapter(resultsAdapter);
+            }
+            nearMeCustomList listAdapter = new nearMeCustomList(this, nameList, addressList, idList, mGoogleApiClient);
+
+            theListView.setAdapter(listAdapter);
         }
 
         theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -147,17 +136,11 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                 String currPlaceName = nameList.get(position);
                 String currPlaceId = idList.get(position);
                 LatLng currLatLong = latLongList.get(position);
-//                Bitmap currPlaceImage = imageList.get(position);
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                currPlaceImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                byte[] byteArray = stream.toByteArray();
 
                 intent.putExtra("place_name", currPlaceName);
                 intent.putExtra("place_id", currPlaceId);
                 intent.putExtra("place_lat", currLatLong.latitude);
                 intent.putExtra("place_long", currLatLong.longitude);
-
-//                intent.putExtra("image",byteArray);
 
                 startActivity(intent);
             }
@@ -195,14 +178,8 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                     if (likelyPlaces.getCount() > 1) {
                         best = likelyPlaces.get(1);
                     }
-                    // Place frozen = best.getPlace().freeze();
-                    //TextView text = (TextView) findViewById(R.id.textView);
-                    //text.setText(frozen.getName());
-                    //placePhotosTask(frozen.getId());
-                    //photo(frozen);
                     likelyPlaces.release();
                 }
-                Log.v("Booooo",likelyPlaces.toString());
                 searchNearMeSetUp();
             }
         });
@@ -224,15 +201,6 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                 if (attributedPhoto != null) {
                     // Photo has been loaded, display it.
                     mImageView.setImageBitmap(attributedPhoto.bitmap);
-
-                    // Display the attribution as HTML content if set.
-                 /*  if (attributedPhoto.attribution == null) {
-                       mText.setVisibility(View.GONE);
-                   } else {
-                       mText.setVisibility(View.VISIBLE);
-                       mText.setText(Html.fromHtml(attributedPhoto.attribution.toString()));
-                   }
-*/
                 }
             }
         }.execute(placeId);
