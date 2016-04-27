@@ -30,7 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements
+public class HomeActivity extends Activity implements
         ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<Status> {
 
     protected static final String TAG = "HomeActivity";

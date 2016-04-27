@@ -32,7 +32,11 @@
     <string name="unknown_geofence_transition">Unknown Transition</string>
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
-    <string name="geofence_done_text">I am done exploring</string>
-    <string name="geofence_start_text">Begin Exploring</string>
+    <string name="geofence_done_text">
+        I am done exploring\nStop OutNabout from sending notifications.
+    </string>
+    <string name="geofence_start_text">
+        Begin Exploring\nLet OutNAbout remind you when you are near something cool.
+    </string>
     <string name="google_app_id">81656790962</string>
 </resources>
