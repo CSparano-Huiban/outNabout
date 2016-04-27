@@ -57,7 +57,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_viewers);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         Bundle extras = getIntent().getExtras();
         titleTextView = (TextView) findViewById(R.id.locationTitle);
         descriptionTextView = (TextView) findViewById(R.id.locationDescription);
@@ -100,8 +99,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
         currentLatitude = String.valueOf(extras.getDouble("place_lat"));
         currentLongitude = String.valueOf(extras.getDouble("place_long"));
 
-        //TODO: need to set discription
-
         currentDescription = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
         titleTextView.setText(currentLocation);
         descriptionTextView.setText(currentDescription);
@@ -111,14 +108,12 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     public void googleClick(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://www.google.com/#q="+ currentLocation.replace(" ","+")));
-
         startActivity(intent);
     }
 
     public void wikiClick(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://en.wikipedia.org/wiki/"+ currentLocation.replace(" ","_")));
-
         startActivity(intent);
     }
 
@@ -130,49 +125,30 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     }
 
     private void placePhotosTask(String input) {
-        Log.v("I hate the world", input);
-        final String placeId = input; // Australian Cruise Group
-//        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
-        // Create a new AsyncTask that displays the bitmap and attribution once loaded.
-        Log.v("I hate the world", String.valueOf(locationImage.getWidth()));
-        Log.v("I hate the world", String.valueOf(locationImage.getHeight()));
         new PhotoTask(500, 500) {
+
             @Override
             protected void onPreExecute() {
-                // Display a temporary image to show while bitmap is loading.
-                //mImageView.setImageResource(R.drawable.empty_photo);
             }
 
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null) {
                     Log.v("I hate the world", "This sucks");
-                    // Photo has been loaded, display it.
                     locationImage.setImageBitmap(attributedPhoto.bitmap);
-
-
-                    // Display the attribution as HTML content if set.
-                 /*  if (attributedPhoto.attribution == null) {
-                       mText.setVisibility(View.GONE);
-                   } else {
-                       mText.setVisibility(View.VISIBLE);
-                       mText.setText(Html.fromHtml(attributedPhoto.attribution.toString()));
-                   }
-*/
                 }
             }
-        }.execute(placeId);
+        }.execute(input);
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.v("I hate the world","I failed");
     }
 
     abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
 
         private int mHeight;
-
         private int mWidth;
 
         public PhotoTask(int width, int height) {
@@ -180,10 +156,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             mWidth = width;
         }
 
-        /**
-         * Loads the first photo for a place id from the Geo Data API.
-         * The place id must be the first (and only) parameter.
-         */
         @Override
         protected AttributedPhoto doInBackground(String... params) {
             if (params.length != 1) {
@@ -268,7 +240,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                     sb.append(buf, 0, read);
                 }
             } catch (Exception e) {
-                // if any I/O error occurs
                 e.printStackTrace();
             } finally {
                 if (urlConnection != null) {
