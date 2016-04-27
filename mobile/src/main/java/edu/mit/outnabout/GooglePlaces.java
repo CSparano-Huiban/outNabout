@@ -104,7 +104,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                         best = likelyPlaces.get(1);
                     }
                     Place frozen = best.getPlace().freeze();
-                    TextView text = (TextView) findViewById(R.id.placesTextView);
+                    TextView text = (TextView) findViewById(R.id.textView);
                     text.setText(frozen.getName());
                     name = (String)frozen.getName();
                     returnIntent.putExtra("name", name);
