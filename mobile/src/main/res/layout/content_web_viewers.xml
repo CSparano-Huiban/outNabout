@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.mit.outnabout.WebViewers"
-    tools:showIn="@layout/activity_web_viewers">
+    tools:showIn="@layout/activity_web_viewers"
+    android:background="@color/backgroundColor">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,7 +30,9 @@
                 android:onClick="googleClick"
                 android:layout_below="@+id/locationDescription"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="15dp"
+                android:background="@color/buttonColor"
+                android:textColor="@color/buttonTextColor"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -38,7 +41,9 @@
                 android:id="@+id/wikiButton"
                 android:onClick="wikiClick"
                 android:layout_below="@+id/googleButton"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:background="@color/buttonColor"
+                android:textColor="@color/buttonTextColor"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -47,7 +52,9 @@
                 android:id="@+id/mapButton"
                 android:onClick="mapClick"
                 android:layout_below="@+id/wikiButton"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:background="@color/buttonColor"
+                android:textColor="@color/buttonTextColor"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +63,9 @@
                 android:text="Large Text"
                 android:id="@+id/locationTitle"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:textColor="@color/textColor1"
+                android:textAlignment="center"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -75,7 +84,8 @@
                 android:id="@+id/locationDescription"
                 android:layout_below="@+id/locationImage"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:textColor="@color/textColor2"/>
 
         </RelativeLayout>
     </ScrollView>

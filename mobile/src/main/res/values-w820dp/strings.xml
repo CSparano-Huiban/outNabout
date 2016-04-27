@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="geofence_done_text">I am done exploring</string>
-    <string name="geofence_start_text">Begin Exploring</string>
+    <string name="geofence_done_text">
+        I am done exploring\nStop OutNabout from sending notifications.
+    </string>
+    <string name="geofence_start_text">
+        Begin Exploring\nLet OutNAbout remind you when you are near something cool.
+    </string>
 </resources>
