@@ -431,4 +431,9 @@ public class HomeActivity extends AppCompatActivity implements
             Log.e(TAG, errorMessage);
         }
     }
+
+    public void acheveClicked(View view) {
+        Intent intent = new Intent(this, acheve.class);
+        startActivity(intent);
+    }
 }
