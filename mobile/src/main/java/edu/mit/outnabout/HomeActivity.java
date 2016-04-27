@@ -99,7 +99,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
     // call this method in order for google places to set the name and photo global variable
-    public void getPlace(){
+    public void getPlaceAndNotify(){
         Intent intent = new Intent(this, GooglePlaces.class);
         startActivityForResult(intent, 1);
     }
@@ -116,29 +116,32 @@ public class HomeActivity extends AppCompatActivity implements
                     photo = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
                 }
 
-
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(this)
-                                .setSmallIcon(R.drawable.notification_icon)
-                                .setContentTitle(name)
-                                .setContentText(hardcodedContent)
-                                .setLargeIcon(photo)
-                                .setPriority(1) // High Priority: should enable heads-up notification
-                                .setColor(Color.argb(0,50, 200, 200))
-                                .extend(new NotificationCompat.WearableExtender().setBackground(photo));
-
-                // Set an ID for the notification
-                int mNotificationId = 001;
-                // Gets an instance of the NotificationManager service
-                NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                // Builds the notification and issues it.
-                mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
             }
         }
     }//onActivityResult
 
     public void notify(View view) {
-        getPlace();
+        getPlaceAndNotify();
+    }
+
+    public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto ){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(smallIcon)
+                        .setContentTitle(title)
+                        .setContentText(contentText)
+                        .setLargeIcon(largeIcon)
+                        .setPriority(1) // High Priority: should enable heads-up notification
+                        .setColor(Color.argb(0,50, 200, 200))
+                        .extend(new NotificationCompat.WearableExtender().setBackground(backgroundPhoto));
+
+        // Set an ID for the notification
+        int mNotificationId = 001;
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
     @Override

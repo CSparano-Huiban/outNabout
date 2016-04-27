@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,17 @@ import com.google.android.gms.location.places.PlacePhotoMetadata;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 // takes place_name, place_id, place_lat, place_long as extras
 public class WebViewers extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener{
@@ -36,6 +48,9 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     Bitmap currentLocationImage;
     private GoogleApiClient mGoogleApiClient;
 
+    private String LOG_MESSAGE = "WebAPIExample";
+
+    private String apiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +90,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
         descriptionTextView.setText(currentDescription);
         currentLocationImage = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
         locationImage.setImageBitmap(currentLocationImage);
+        getWebResult();
     }
 
     public void displayFromExtras(Bundle extras){
@@ -86,10 +102,10 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
 
         //TODO: need to set discription
 
-        currentDescription = currentLocation + " is the best place in all of boston";
-
+        currentDescription = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
         titleTextView.setText(currentLocation);
         descriptionTextView.setText(currentDescription);
+        getWebResult();
     }
 
     public void googleClick(View view) {
@@ -211,5 +227,94 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                 this.bitmap = bitmap;
             }
         }
+    }
+
+    public void getWebResult() {
+        String encodedInput = null;
+        try {
+            encodedInput = URLEncoder.encode(currentLocation, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(LOG_MESSAGE, "Encoding exception");
+            e.printStackTrace();
+        }
+        if (encodedInput != null) {
+            apiUrl = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + encodedInput;
+            new CallAPI().execute(apiUrl);
+        }
+    }
+    private class CallAPI extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params) {
+
+            String urlString = params[0]; // URL to call
+
+            HttpURLConnection urlConnection = null;
+
+            InputStream in = null;
+            StringBuilder sb = new StringBuilder();
+
+            char[] buf = new char[4096];
+
+            // do the HTTP Get
+            try {
+                URL url = new URL(urlString);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStreamReader reader = new InputStreamReader(urlConnection.getInputStream());
+
+                Log.i(LOG_MESSAGE, "got input stream");
+
+                int read;
+                while ((read = reader.read(buf)) != -1) {
+                    sb.append(buf, 0, read);
+                }
+            } catch (Exception e) {
+                // if any I/O error occurs
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                try {
+                    // releases any system resources associated with the stream
+                    if (in != null)
+                        in.close();
+                } catch (IOException e) {
+                    Log.i(LOG_MESSAGE + " Error:", e.getMessage());
+                }
+            }
+            Log.i(LOG_MESSAGE, "Finished reading");
+            return sb.toString();
+        }
+
+
+        protected void onPostExecute(String result) {
+            Log.i(LOG_MESSAGE, "starting onPostExecute");
+
+            JSONObject foodEntries;
+            JSONObject page;
+            JSONObject pageFromId;
+            String description = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";;
+
+            // separate this out so people can work on it.
+            try {
+                JSONObject jObject = new JSONObject(result);
+                foodEntries = jObject.getJSONObject("query");
+                page = foodEntries.getJSONObject("pages");
+                pageFromId = page.getJSONObject((String) page.names().get(0));
+                description = pageFromId.getString("extract");
+
+            } catch (JSONException e) {
+                Log.e(LOG_MESSAGE, "Could not do JSON result");
+                Log.i(LOG_MESSAGE, e.getMessage());
+            }
+
+            showFoodEntries1(description);
+        }
+
+    }
+
+    private void showFoodEntries1(String description) {
+        TextView tv = (TextView) findViewById(R.id.locationDescription);
+        tv.setText(description);
     }
 }

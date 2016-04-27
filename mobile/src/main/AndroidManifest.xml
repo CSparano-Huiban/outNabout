@@ -10,17 +10,11 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission
-        android:name="com.example.androidmapsv2.permission.MAPS_RECEIVE"/>
-    <uses-permission
-        android:name="edu.mit.outnabout.permission.MAPS_RECEIVE"/>
-    <uses-permission
-        android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission
-        android:name="com.google.android.providers.gsf.permission.WRITE_GSERVICES"/>
-    <uses-permission
-        android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.example.androidmapsv2.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="edu.mit.outnabout.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.WRITE_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -32,11 +26,13 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -60,7 +56,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.mit.outnabout.HomeActivity" />
         </activity>
-
         <activity
             android:name=".GooglePlaces"
             android:label="GP">
@@ -68,7 +63,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.mit.outnabout.HomeActivity" />
         </activity>
-
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -83,10 +77,14 @@
         <activity
             android:name=".potential_home"
             android:label="@string/title_activity_potential_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".GeofenceTransitionsIntentService" />
 
+        <activity
+            android:name=".acheve"
+            android:label="@string/title_activity_acheve"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
