@@ -89,39 +89,12 @@ public class HomeActivity extends AppCompatActivity implements
         if (!exploring) {
             serviceIntent = new Intent(this, MyService.class);
             startService(serviceIntent);
-            text.setText("STOP EXPLORING");
+            text.setText("@string/geofence_done_text");
         }else{
             stopService(serviceIntent);
-            text.setText("BEGIN EXPLORING");
+            text.setText("@string/geofence_start_text");
         }
         exploring = !exploring;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Register mMessageReceiver to receive messages.
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                new IntentFilter("my-event"));
-    }
-
-    // handler for received Intents for the "my-event" event
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Extract data included in the Intent
-            String message = intent.getStringExtra("message");
-            getPlaceAndNotify();
-            Log.d("receiver", "Got message: " + message);
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        // Unregister since the activity is not visible
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        super.onPause();
     }
 
     public void moveToMaps(View view) {
@@ -139,6 +112,8 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
+            Button text = (Button) findViewById(R.id.geofence_button);
+            text.setText("@string/geofence_done_text");
             if (resultCode == Activity.RESULT_OK) {
                 name = data.getStringExtra("name");
                 byte[] byteArray = getIntent().getByteArrayExtra("photo");
@@ -202,7 +177,7 @@ public class HomeActivity extends AppCompatActivity implements
         populateGeofenceList();
 
         // Kick off the request to build GoogleApiClient.
-        buildGoogleApiClient();
+       // buildGoogleApiClient();
 
     }
 
@@ -364,13 +339,13 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
+ //       mGoogleApiClient.disconnect();
     }
 
     /**

@@ -43,7 +43,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -51,6 +51,9 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+        getData();
+        Log.e("googleplaces","in google places");
+
       //  done();
     }
 
@@ -64,14 +67,10 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
         // ...
     }
 
-    public void find (View view ){
-        getData();
-       // finish();
-
-    }
 
 
     public void getData() {
+        Log.e("googleplaces","in data");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -80,9 +79,10 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            Log.e("googleplaces","returned early");
             return;
         }
-
+        Log.e("googleplaces","got passed return");
         PlaceFilter filter = new PlaceFilter();
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, filter);
@@ -90,7 +90,9 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+                Log.e("googleplaces","callback");
                 if (likelyPlaces.getCount() > 0){
+                    Log.e("googleplaces","got places");
                     PlaceLikelihood best = likelyPlaces.get(0);
                     for (PlaceLikelihood placeLikelihood : likelyPlaces) {
                         if (best.getLikelihood() < placeLikelihood.getLikelihood()){
@@ -103,12 +105,15 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                     if (likelyPlaces.getCount()>1) {
                         best = likelyPlaces.get(1);
                     }
+                    Log.e("googleplaces"," before frozen place");
                     Place frozen = best.getPlace().freeze();
-                    TextView text = (TextView) findViewById(R.id.textView);
-                    text.setText(frozen.getName());
+                    //TextView text = (TextView) findViewById(R.id.textView);
+                    //text.setText(frozen.getName());
                     name = (String)frozen.getName();
                     returnIntent.putExtra("name", name);
+                    Log.e("googleplaces","before photo task");
                     placePhotosTask(frozen.getId());
+                    Log.e("googleplaces","after photo task");
                     //Intent returnIntent = new Intent();
                     //returnIntent.putExtra("name", name);
                     //ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -158,6 +163,7 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                    }*/
                 }else{
                     setResult(RESULT_OK, returnIntent);
+                    Log.e("googleplaces","finished async task");
                     finish();
                 }
             }
