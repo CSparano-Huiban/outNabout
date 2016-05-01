@@ -41,6 +41,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     private LocationListener locationListener = null;
     private static final String TAG = "ServiceExample";
     PlaceFilter filter = new PlaceFilter();
+
     public MyService() {
     }
 
@@ -53,7 +54,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             } else {
                 photo = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
             }
-            //  sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
         }
         Log.e(TAG, "setting notification");
         sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
@@ -126,6 +126,8 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
+        int distance = 10;
+        int time = 30000;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -137,7 +139,11 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             return;
         }
         if (locationManager != null ) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 0, locationListener);
+            if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
+            } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, locationListener);
+            }
         }
     }
 
@@ -207,7 +213,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
                 if (attributedPhoto != null) {
                     // Photo has been loaded, display it.
 
-                    //    mImageView.setImageBitmap(attributedPhoto.bitmap);
                     placePhoto = attributedPhoto.bitmap;
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -221,7 +226,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             }
         }.execute(placeId);
     }
-    
+
     abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
 
         private int mHeight;
