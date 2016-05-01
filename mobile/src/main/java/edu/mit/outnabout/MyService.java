@@ -3,6 +3,7 @@ package edu.mit.outnabout;
 import android.Manifest;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -41,7 +42,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     private LocationListener locationListener = null;
     private static final String TAG = "ServiceExample";
     PlaceFilter filter = new PlaceFilter();
-
     public MyService() {
     }
 
@@ -54,6 +54,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             } else {
                 photo = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
             }
+            //  sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
         }
         Log.e(TAG, "setting notification");
         sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
@@ -122,12 +123,14 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             public void onProviderDisabled(String provider) {
             }
         };
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         getLocation();
+        Log.i(TAG, "done with Service onCreate");
     }
 
     public void getLocation() {
-        int distance = 10;
-        int time = 30000;
+        int time = 6000;
+        int distance = 50;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -139,11 +142,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             return;
         }
         if (locationManager != null ) {
-            if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
-            } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, locationListener);
-            }
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
         }
     }
 
@@ -207,12 +206,14 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
 
             }
 
+
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 Log.e("I hate the world", "I returned a photo");
                 if (attributedPhoto != null) {
                     // Photo has been loaded, display it.
 
+                    //    mImageView.setImageBitmap(attributedPhoto.bitmap);
                     placePhoto = attributedPhoto.bitmap;
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -226,7 +227,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             }
         }.execute(placeId);
     }
-
     abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
 
         private int mHeight;
