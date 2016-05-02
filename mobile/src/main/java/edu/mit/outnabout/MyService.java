@@ -32,12 +32,15 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MyService extends Service implements GoogleApiClient.OnConnectionFailedListener {
     private GoogleApiClient mGoogleApiClient;
     private Bitmap placePhoto = null;
-    String hardcodedContent = "The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
+    String hardcodedContent = ""; //"The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
     // Acquire a reference to the system Location Manager
     private LocationManager locationManager = null;
     private LocationListener locationListener = null;
@@ -45,6 +48,10 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     PlaceFilter filter = new PlaceFilter();
     public MyService() {
     }
+    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technolgy", "MIT Chapel",
+            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
+            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics", "MIT Stata Center",
+            "Wang Fitness Center","Delta Kappa Epsilon");
 
     private void setNotification(String name, byte[] picture, boolean hasPicture, Place place) {
         mGoogleApiClient.disconnect();
@@ -145,8 +152,8 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
-        int time = 6000;// * 60 * 60;
-        int distance = 0;
+        int time = 6000 * 60 * 60;
+        int distance = 50;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -163,10 +170,10 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
                 Log.e(TAG, "using network");
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
         } else {*/
-            if (locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, locationListener);
-                Log.e(TAG, "using gps");
-            }
+            //if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)){
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
+                Log.e(TAG, "using network");
+         //   }
 
         }
     }
@@ -184,7 +191,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getData() {
-        Log.e(TAG,"in data");
+        Log.e(TAG,"in getData");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -203,22 +210,31 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
         Log.e(TAG,"waiting for places");
         PlaceLikelihoodBuffer likelyPlaces = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, filter).await();
-        Log.e(TAG,"before callback");
-                Log.e(TAG,"callback");
-                if (likelyPlaces.getCount() > 0){
-                    Log.e(TAG,"got places");
-                    PlaceLikelihood best = likelyPlaces.get(0);
-                    if (likelyPlaces.getCount()>1) {
-                        best = likelyPlaces.get(1);
-                    }
-                    Log.e(TAG," before frozen place");
-                    Place frozen = best.getPlace().freeze();
-                    Log.e(TAG,"before photo task");
-                    likelyPlaces.release();
-                    placePhotosTask(frozen.getId(), (String) frozen.getName(),frozen);
-                    Log.e(TAG,"after photo task");
-                }
-        Log.e(TAG,"after callback");
+
+        ArrayList<Place> result = new ArrayList<>();
+
+        for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+            if (landmarks.contains(placeLikelihood.getPlace().getName())){
+                result.add(placeLikelihood.getPlace().freeze());
+            }
+           /* Log.i(TAG, String.format("Place '%s' has likelihood: %g",
+                    placeLikelihood.getPlace().getName(),
+                    placeLikelihood.getLikelihood()));*/
+        }
+        likelyPlaces.release();
+        Log.e(TAG,"messing with results");
+        if (result.size() > 0){
+            Place best = result.get(0);
+            Log.e(TAG,"got places");
+            //PlaceLikelihood best = likelyPlaces.get(0);
+            if (result.size() > 1) {
+                best = result.get(1);
+            }
+            Log.e(TAG, "before photo task");
+            placePhotosTask(best.getId(), (String) best.getName(), best);
+            Log.e(TAG,"after photo task");
+        }
+        Log.e(TAG,"end getDAta");
     }
 
     private void placePhotosTask(String input, final String name, final Place place) {
