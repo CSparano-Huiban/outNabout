@@ -47,7 +47,7 @@
             android:layout_marginBottom="3dp"
             android:layout_weight=".33"
             android:background="#000000"
-            android:onClick="toggleGeofence"
+            android:onClick="toggleGPS"
             android:padding="5dp">
 
             <TextView

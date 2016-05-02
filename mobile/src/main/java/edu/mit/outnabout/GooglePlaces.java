@@ -53,7 +53,6 @@ public class GooglePlaces extends FragmentActivity implements GoogleApiClient.On
                 .build();
         getData();
         Log.e("googleplaces","in google places");
-
       //  done();
     }
 
