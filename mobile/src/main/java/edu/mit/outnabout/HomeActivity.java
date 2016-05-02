@@ -79,7 +79,8 @@ public class HomeActivity extends AppCompatActivity implements
     private SharedPreferences mSharedPreferences;
 
     // Button for toggling the process of adding or removing geofences.
-    private Button mGeofencesButton;
+    private TextView mGeofencesLargeText;
+    private TextView mGeofencesSmallText;
 
     String hardcodedTitle = "New Location Found!";
     String hardcodedContent = "The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
@@ -91,15 +92,16 @@ public class HomeActivity extends AppCompatActivity implements
 
     private Intent serviceIntent;
     public void toggleGeofence(View view){
-        Button text = (Button) findViewById(R.id.geofence_button);
 
         if (!exploring) {
             serviceIntent = new Intent(this, MyService.class);
             startService(serviceIntent);
-            text.setText(R.string.geofence_done_text);
+            mGeofencesLargeText.setText("I am done exploring");
+            mGeofencesSmallText.setText("Stop OutNabout from sending notifications.");
         }else{
             stopService(serviceIntent);
-            text.setText(R.string.geofence_start_text);
+            mGeofencesLargeText.setText("Begin Exploring");
+            mGeofencesSmallText.setText("Let OutNAbout remind you when you are near something cool.");
         }
         exploring = !exploring;
     }
@@ -119,8 +121,10 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            Button text = (Button) findViewById(R.id.geofence_button);
-            text.setText(R.string.geofence_done_text);
+//            Button text = (Button) findViewById(R.id.geofence_button);
+            mGeofencesLargeText.setText("I am done exploring");
+            mGeofencesSmallText.setText("Stop OutNabout from sending notifications.");
+
             if (resultCode == Activity.RESULT_OK) {
                 name = data.getStringExtra("name");
                 byte[] byteArray = getIntent().getByteArrayExtra("photo");
@@ -164,25 +168,8 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
         // Get the UI widget.
-        mGeofencesButton = (Button) findViewById(R.id.geofence_button);
-        Button nearMeButton = (Button) findViewById(R.id.button2);
-        Button acheveButton = (Button) findViewById(R.id.achevButton);
-
-//        mGeofencesButton.setText(Html.fromHtml("Begin Exploring<br/><small>Let OutNAbout remind you when you are near something cool.</small>"));
-        String s1 = "I wish this worked";
-        String s2 = "I know";
-        int n = s1.length();
-        int m = s2.length();
-        Spannable span = new SpannableString(s1 + "\n" +  s2);
-//Big font till you find `\n`
-        StyleSpan boldSpan = new StyleSpan( Typeface.BOLD );
-        span.setSpan(boldSpan,0, n, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//Small font from `\n` to the end
-        span.setSpan(new RelativeSizeSpan(0.5f), n, (n+m+1), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mGeofencesButton.setText(span);
-//        mGeofencesButton.setText(R.string.test_string);
-        nearMeButton.setText(Html.fromHtml("What's Near Me<br/><small>Click to get a list of tourist attractions nearby.</small>"));
-        acheveButton.setText(Html.fromHtml("What have I seen<br/><small>Click to see a list of places that you've been to.</small>"));
+        mGeofencesLargeText = (TextView) findViewById(R.id.geoLarge);
+        mGeofencesSmallText = (TextView) findViewById(R.id.geoSmall);
 
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<Geofence>();
@@ -214,9 +201,11 @@ public class HomeActivity extends AppCompatActivity implements
      */
     private void toggleGeofenceButtonText() {
         if (mGeofencesAdded) {
-            mGeofencesButton.setText(Html.fromHtml("I am done exploring<br/><small>Stop OutNabout from sending notifications.</small>"));
+            mGeofencesLargeText.setText("I am done exploring");
+            mGeofencesSmallText.setText("Stop OutNabout from sending notifications.");
         } else {
-            mGeofencesButton.setText(Html.fromHtml("Begin Exploring<br/><small>Let OutNAbout remind you when you are near something cool.</small>"));
+            mGeofencesLargeText.setText("Begin Exploring");
+            mGeofencesSmallText.setText("Let OutNAbout remind you when you are near something cool.");
         }
     }
 
