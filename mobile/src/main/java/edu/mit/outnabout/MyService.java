@@ -139,7 +139,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
-        int time = 6000;// * 60 * 60;
+        int time = 6000 * 60 * 60;
         int distance = 50;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
