@@ -47,14 +47,11 @@
             android:background="@color/buttonColor"
             android:paddingLeft="20dp"
             android:textColor="@color/buttonTextColor"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/locationTitle"
-            android:layout_toEndOf="@+id/locationTitle"
             android:layout_weight="1"
             android:paddingRight="20dp" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="What&apos;s Near Me&#10;Click to get a list of tourist attractions nearby."
             android:id="@+id/button2"
@@ -63,16 +60,13 @@
             android:paddingLeft="20dp"
             android:background="@color/buttonColor"
             android:textColor="@color/buttonTextColor"
-            android:layout_below="@+id/geofence_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:paddingRight="20dp" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="What have I seen?&#10;Click to see a list of places that you've been to."
             android:id="@+id/achevButton"
@@ -80,12 +74,10 @@
             android:paddingLeft="20dp"
             android:textColor="@color/buttonTextColor"
             android:background="@color/buttonColor"
-            android:layout_below="@+id/button2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_weight="1"
             android:onClick="acheveClicked"
-            android:paddingRight="20dp" />
+            android:paddingRight="20dp"
+            />
     </LinearLayout>
 
 </RelativeLayout>

@@ -47,6 +47,8 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     ImageView locationImage;
     Bitmap currentLocationImage;
     private GoogleApiClient mGoogleApiClient;
+    PlacePhotoMetadataResult result;
+    private PlacePhotoMetadataBuffer photoMetadataBuffer;
 
     private String LOG_MESSAGE = "WebAPIExample";
 
@@ -82,6 +84,28 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                         .setAction("Action", null).show();
             }
         });*/
+    }
+    @Override
+    protected void onStop(){
+        if (result != null && result.getPhotoMetadata() != null)
+            result.getPhotoMetadata().release();
+        if (photoMetadataBuffer != null)
+            photoMetadataBuffer.release();
+        mGoogleApiClient.disconnect();
+        Log.e("webview", "leaving");
+
+        super.onStop();
+    }
+    @Override
+    protected void onPause(){
+        if (result != null && result.getPhotoMetadata() != null)
+            result.getPhotoMetadata().release();
+        if (photoMetadataBuffer != null)
+            photoMetadataBuffer.release();
+        mGoogleApiClient.disconnect();
+        Log.e("webview", "leaving");
+
+        super.onPause();
     }
 
     public void displayDefaults(){
@@ -167,11 +191,11 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             final String placeId = params[0];
             AttributedPhoto attributedPhoto = null;
 
-            PlacePhotoMetadataResult result = Places.GeoDataApi
+            result = Places.GeoDataApi
                     .getPlacePhotos(mGoogleApiClient, placeId).await();
 
             if (result.getStatus().isSuccess()) {
-                PlacePhotoMetadataBuffer photoMetadataBuffer = result.getPhotoMetadata();
+                photoMetadataBuffer = result.getPhotoMetadata();
                 if (photoMetadataBuffer.getCount() > 0 && !isCancelled()) {
                     // Get the first bitmap and its attributions.
                     PlacePhotoMetadata photo = photoMetadataBuffer.get(0);

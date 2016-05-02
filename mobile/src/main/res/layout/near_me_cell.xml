@@ -6,10 +6,10 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/near_me_image" />
+    <!--<ImageView-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:id="@+id/near_me_image" />-->
 
     <RelativeLayout
         android:layout_width="match_parent"

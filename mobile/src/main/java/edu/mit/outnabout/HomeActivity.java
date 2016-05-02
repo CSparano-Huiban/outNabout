@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,6 +22,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.app.NotificationCompat;
@@ -163,7 +169,18 @@ public class HomeActivity extends AppCompatActivity implements
         Button acheveButton = (Button) findViewById(R.id.achevButton);
 
 //        mGeofencesButton.setText(Html.fromHtml("Begin Exploring<br/><small>Let OutNAbout remind you when you are near something cool.</small>"));
-        mGeofencesButton.setText(R.string.test_string);
+        String s1 = "I wish this worked";
+        String s2 = "I know";
+        int n = s1.length();
+        int m = s2.length();
+        Spannable span = new SpannableString(s1 + "\n" +  s2);
+//Big font till you find `\n`
+        StyleSpan boldSpan = new StyleSpan( Typeface.BOLD );
+        span.setSpan(boldSpan,0, n, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//Small font from `\n` to the end
+        span.setSpan(new RelativeSizeSpan(0.5f), n, (n+m+1), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mGeofencesButton.setText(span);
+//        mGeofencesButton.setText(R.string.test_string);
         nearMeButton.setText(Html.fromHtml("What's Near Me<br/><small>Click to get a list of tourist attractions nearby.</small>"));
         acheveButton.setText(Html.fromHtml("What have I seen<br/><small>Click to see a list of places that you've been to.</small>"));
 
