@@ -47,6 +47,8 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     ImageView locationImage;
     Bitmap currentLocationImage;
     private GoogleApiClient mGoogleApiClient;
+    PlacePhotoMetadataResult result;
+    private PlacePhotoMetadataBuffer photoMetadataBuffer;
 
     private String LOG_MESSAGE = "WebAPIExample";
 
@@ -82,6 +84,28 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                         .setAction("Action", null).show();
             }
         });*/
+    }
+    @Override
+    protected void onStop(){
+        if (result != null && result.getPhotoMetadata() != null)
+            result.getPhotoMetadata().release();
+        if (photoMetadataBuffer != null)
+            photoMetadataBuffer.release();
+        mGoogleApiClient.disconnect();
+        Log.e("webview", "leaving");
+
+        super.onStop();
+    }
+    @Override
+    protected void onPause(){
+        if (result != null && result.getPhotoMetadata() != null)
+            result.getPhotoMetadata().release();
+        if (photoMetadataBuffer != null)
+            photoMetadataBuffer.release();
+        mGoogleApiClient.disconnect();
+        Log.e("webview", "leaving");
+
+        super.onPause();
     }
 
     public void displayDefaults(){
@@ -167,11 +191,11 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             final String placeId = params[0];
             AttributedPhoto attributedPhoto = null;
 
-            PlacePhotoMetadataResult result = Places.GeoDataApi
+            result = Places.GeoDataApi
                     .getPlacePhotos(mGoogleApiClient, placeId).await();
 
             if (result.getStatus().isSuccess()) {
-                PlacePhotoMetadataBuffer photoMetadataBuffer = result.getPhotoMetadata();
+                photoMetadataBuffer = result.getPhotoMetadata();
                 if (photoMetadataBuffer.getCount() > 0 && !isCancelled()) {
                     // Get the first bitmap and its attributions.
                     PlacePhotoMetadata photo = photoMetadataBuffer.get(0);
@@ -184,6 +208,10 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                 }
                 // Release the PlacePhotoMetadataBuffer.
                 photoMetadataBuffer.release();
+            }
+            if(result.getPhotoMetadata() != null){
+//                Log.e(myTag,"I hate this shit");
+                result.getPhotoMetadata().release();
             }
             return attributedPhoto;
         }
@@ -268,15 +296,23 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             JSONObject foodEntries;
             JSONObject page;
             JSONObject pageFromId;
-            String description = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";;
+            String description = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
 
             // separate this out so people can work on it.
             try {
                 JSONObject jObject = new JSONObject(result);
+                Log.i(LOG_MESSAGE, jObject.toString());
                 foodEntries = jObject.getJSONObject("query");
+                Log.i(LOG_MESSAGE, foodEntries.toString());
                 page = foodEntries.getJSONObject("pages");
+                Log.i(LOG_MESSAGE, page.toString());
                 pageFromId = page.getJSONObject((String) page.names().get(0));
+                Log.i(LOG_MESSAGE, pageFromId.toString());
                 description = pageFromId.getString("extract");
+                Log.i(LOG_MESSAGE, description);
+                if(description.equals("")){
+                    description = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
+                }
 
             } catch (JSONException e) {
                 Log.e(LOG_MESSAGE, "Could not do JSON result");
@@ -289,6 +325,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     }
 
     private void showFoodEntries1(String description) {
+        Log.e("CSpan",description);
         TextView tv = (TextView) findViewById(R.id.locationDescription);
         tv.setText(description);
     }

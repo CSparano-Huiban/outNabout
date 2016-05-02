@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,6 +21,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.app.NotificationCompat;
@@ -72,7 +79,8 @@ public class HomeActivity extends AppCompatActivity implements
     private SharedPreferences mSharedPreferences;
 
     // Button for toggling the process of adding or removing geofences.
-    private Button mGeofencesButton;
+    private TextView mGeofencesLargeText;
+    private TextView mGeofencesSmallText;
 
     String hardcodedTitle = "New Location Found!";
     String hardcodedContent = "The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
@@ -84,15 +92,16 @@ public class HomeActivity extends AppCompatActivity implements
 
     private Intent serviceIntent;
     public void toggleGeofence(View view){
-        Button text = (Button) findViewById(R.id.geofence_button);
 
         if (!exploring) {
             serviceIntent = new Intent(this, MyService.class);
             startService(serviceIntent);
-            text.setText("@string/geofence_done_text");
+            mGeofencesLargeText.setText("I am done exploring");
+            mGeofencesSmallText.setText("Stop OutNabout from sending notifications.");
         }else{
             stopService(serviceIntent);
-            text.setText("@string/geofence_start_text");
+            mGeofencesLargeText.setText("Begin Exploring");
+            mGeofencesSmallText.setText("Let OutNAbout remind you when you are near something cool.");
         }
         exploring = !exploring;
     }
@@ -112,8 +121,10 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            Button text = (Button) findViewById(R.id.geofence_button);
-            text.setText("@string/geofence_done_text");
+//            Button text = (Button) findViewById(R.id.geofence_button);
+            mGeofencesLargeText.setText("I am done exploring");
+            mGeofencesSmallText.setText("Stop OutNabout from sending notifications.");
+
             if (resultCode == Activity.RESULT_OK) {
                 name = data.getStringExtra("name");
                 byte[] byteArray = getIntent().getByteArrayExtra("photo");
@@ -157,7 +168,8 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
         // Get the UI widget.
-        mGeofencesButton = (Button) findViewById(R.id.geofence_button);
+        mGeofencesLargeText = (TextView) findViewById(R.id.geoLarge);
+        mGeofencesSmallText = (TextView) findViewById(R.id.geoSmall);
 
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<Geofence>();
@@ -171,7 +183,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
-        toggleGeofenceButtonText();
+//        toggleGeofenceButtonText();
 
         // Get the geofences used. Geofence data is hard coded in this sample.
         populateGeofenceList();
@@ -185,12 +197,15 @@ public class HomeActivity extends AppCompatActivity implements
      * Ensures that only one button is enabled at any time. The Add Geofences button is enabled
      * if the user hasn't yet added geofences. The Remove Geofences button is enabled if the
      * user has added geofences.
+     *
      */
     private void toggleGeofenceButtonText() {
         if (mGeofencesAdded) {
-            mGeofencesButton.setText(R.string.geofence_done_text);
+            mGeofencesLargeText.setText("I am done exploring");
+            mGeofencesSmallText.setText("Stop OutNabout from sending notifications.");
         } else {
-            mGeofencesButton.setText(R.string.geofence_start_text);
+            mGeofencesLargeText.setText("Begin Exploring");
+            mGeofencesSmallText.setText("Let OutNAbout remind you when you are near something cool.");
         }
     }
 

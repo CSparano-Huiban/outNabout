@@ -13,7 +13,7 @@
     <string name="geofences_removed">Geofences removed</string>
 
     <!-- Error strings -->
-    <string name="not_connected">GoogleApiClient no yet connected. Try again.</string>
+    <string name="not_connected">GoogleApiClient not yet connected. Try again.</string>
     <string name="geofence_not_available">Geofence service is not available now</string>
     <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
     <string name="geofence_too_many_pending_intents">
@@ -30,6 +30,7 @@
     <string name="geofence_transition_entered">Entered</string>
     <string name="geofence_transition_exited">Exited</string>
     <string name="unknown_geofence_transition">Unknown Transition</string>
+    <string name="test_string"><font size="20">First line!</font>\n\<font size="10">Second line!</font></string>
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
     <string name="geofence_done_text">

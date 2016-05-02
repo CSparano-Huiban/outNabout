@@ -30,6 +30,12 @@ public class AcheveCustomList extends ArrayAdapter<String>{
         this.total = total;
 
     }
+
+    @Override
+    public boolean isEnabled (int position) {
+        return false;
+    }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();

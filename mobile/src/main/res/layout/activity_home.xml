@@ -8,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.mit.outnabout.HomeActivity"
-    android:background="@color/backgroundColor">
+    android:background="@color/backgroundColor"
+    >
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,58 +35,120 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:weightSum="1">
 
-        <Button
+        <RelativeLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="@string/geofence_start_text"
-            android:id="@+id/geofence_button"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_weight=".33"
+            android:background="#000000"
             android:onClick="toggleGeofence"
-            android:allowUndo="false"
-            android:textAlignment="textStart"
-            android:background="@color/buttonColor"
-            android:paddingLeft="20dp"
-            android:textColor="@color/buttonTextColor"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/locationTitle"
-            android:layout_toEndOf="@+id/locationTitle"
-            android:layout_weight="1"
-            android:paddingRight="20dp" />
+            android:padding="5dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="What&apos;s Near Me&#10;Click to get a list of tourist attractions nearby."
-            android:id="@+id/button2"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Begin Exploring"
+                android:id="@+id/geoLarge"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Let OutNAbout tell you when you are near something cool."
+                android:id="@+id/geoSmall"
+                android:layout_gravity="center"
+                android:textColor="@android:color/darker_gray"
+                android:gravity="center|center_horizontal"
+                android:layout_below="@+id/geoLarge"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_weight=".33"
+            android:background="#000000"
             android:onClick="moveToMaps"
-            android:textAlignment="textStart"
-            android:paddingLeft="20dp"
-            android:background="@color/buttonColor"
-            android:textColor="@color/buttonTextColor"
-            android:layout_below="@+id/geofence_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:paddingRight="20dp" />
+            android:padding="5dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="What have I seen?&#10;Click to see a list of places that you've been to."
-            android:id="@+id/achevButton"
-            android:textAlignment="textStart"
-            android:paddingLeft="20dp"
-            android:textColor="@color/buttonTextColor"
-            android:background="@color/buttonColor"
-            android:layout_below="@+id/button2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="1"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="What&apos;s Near Me"
+                android:id="@+id/textView5"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Click to get a list of tourist attractions nearby."
+                android:id="@+id/textView6"
+                android:layout_gravity="center"
+                android:textColor="@android:color/darker_gray"
+                android:gravity="center"
+                android:layout_below="@+id/textView5"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_weight=".33"
+            android:background="#000000"
             android:onClick="acheveClicked"
-            android:paddingRight="20dp" />
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="What have I seen?"
+                android:id="@+id/textView7"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Click to see a list of places that you&apos;ve been to."
+                android:id="@+id/textView8"
+                android:layout_gravity="center"
+                android:textColor="@android:color/darker_gray"
+                android:gravity="center"
+                android:layout_below="@+id/textView7"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 </RelativeLayout>
