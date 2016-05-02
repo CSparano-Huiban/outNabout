@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,6 +54,37 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
     private static final String TAG = GooglePlaces.class.getSimpleName();
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onStop(){
+
+        result.cancel();
+        if (likelyPlaces != null)
+        likelyPlaces.release();
+        mGoogleApiClient.disconnect();
+        Log.e(TAG, "leaving");
+
+        super.onStop();
+    }
+    @Override
+    protected void onPause(){
+        result.cancel();
+        if (likelyPlaces != null)
+        likelyPlaces.release();
+        mGoogleApiClient.disconnect();
+        Log.e(TAG, "leaving");
+        super.onPause();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_potential_home);
@@ -61,9 +93,14 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
+                //.enableAutoManage(this, this)
                 .build();
-
+        mGoogleApiClient.connect();
+        /*new Thread (new Runnable() {
+            public void run() {
+                find();
+            }
+        }).start();*/
         find();
 
         Log.v("I hate this shit","I am doing something");
@@ -146,6 +183,8 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
             }
         });
     }
+    PendingResult<PlaceLikelihoodBuffer> result = null;
+    PlaceLikelihoodBuffer likelyPlaces = null;
     public void find() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -159,13 +198,14 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
         }
 
         PlaceFilter filter = new PlaceFilter();
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+        result = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, filter);
 
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
-            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+            public void onResult(PlaceLikelihoodBuffer likelyPlace) {
                 results.clear();
+                likelyPlaces = likelyPlace;
                 if (likelyPlaces.getCount() > 0) {
                     PlaceLikelihood best = likelyPlaces.get(0);
 

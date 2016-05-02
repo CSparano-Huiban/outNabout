@@ -1,13 +1,23 @@
 package edu.mit.outnabout;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -15,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -70,13 +81,31 @@ public class HomeActivity extends AppCompatActivity implements
     Bitmap photo;
 
 
+    private boolean exploring = false;
+
+    private Intent serviceIntent;
+    public void toggleGeofence(View view){
+        Button text = (Button) findViewById(R.id.geofence_button);
+
+        if (!exploring) {
+            serviceIntent = new Intent(this, MyService.class);
+            startService(serviceIntent);
+            text.setText("@string/geofence_done_text");
+        }else{
+            stopService(serviceIntent);
+            text.setText("@string/geofence_start_text");
+        }
+        exploring = !exploring;
+    }
+
     public void moveToMaps(View view) {
         Intent intent = new Intent(this, potential_home.class);
         startActivity(intent);
 
     }
+
     // call this method in order for google places to set the name and photo global variable
-    public void getPlaceAndNotify(){
+    public void getPlaceAndNotify() {
         Intent intent = new Intent(this, GooglePlaces.class);
         startActivityForResult(intent, 1);
     }
@@ -84,12 +113,14 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
+            Button text = (Button) findViewById(R.id.geofence_button);
+            text.setText("@string/geofence_done_text");
+            if (resultCode == Activity.RESULT_OK) {
                 name = data.getStringExtra("name");
                 byte[] byteArray = getIntent().getByteArrayExtra("photo");
-                if(byteArray != null){
+                if (byteArray != null) {
                     photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                }else{
+                } else {
                     photo = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
                 }
 
@@ -102,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements
         getPlaceAndNotify();
     }
 
-    public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto ){
+    public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(smallIcon)
@@ -110,7 +141,7 @@ public class HomeActivity extends AppCompatActivity implements
                         .setContentText(contentText)
                         .setLargeIcon(largeIcon)
                         .setPriority(1) // High Priority: should enable heads-up notification
-                        .setColor(Color.argb(0,50, 200, 200))
+                        .setColor(Color.argb(0, 50, 200, 200))
                         .extend(new NotificationCompat.WearableExtender().setBackground(backgroundPhoto));
 
         // Set an ID for the notification
@@ -153,7 +184,7 @@ public class HomeActivity extends AppCompatActivity implements
         populateGeofenceList();
 
         // Kick off the request to build GoogleApiClient.
-        buildGoogleApiClient();
+       // buildGoogleApiClient();
 
     }
 
@@ -171,13 +202,13 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
-    public void toggleGeofence(View view) {
+    /*public void toggleGeofence(View view) {
         if (mGeofencesAdded){
             addGeofences(view);
         }else{
             removeGeofences(view);
         }
-    }
+    }*/
 
     /**
      * This sample hard codes geofence data. A real app might dynamically create geofences based on
@@ -316,13 +347,13 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
+ //       mGoogleApiClient.disconnect();
     }
 
     /**
