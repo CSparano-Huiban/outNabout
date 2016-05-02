@@ -2,6 +2,7 @@ package edu.mit.outnabout;
 
 import android.Manifest;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     public MyService() {
     }
 
-    private void setNotification(String name, byte[] picture, boolean hasPicture) {
+    private void setNotification(String name, byte[] picture, boolean hasPicture, Place place) {
         mGoogleApiClient.disconnect();
         Bitmap photo = null;
         if (hasPicture) {
@@ -57,12 +58,25 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             //  sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
         }
         Log.e(TAG, "setting notification");
-        sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
+        sendNotification(R.drawable.notification_icon, name, place.getAddress().toString(), photo, photo, place);
     }
 
     
-    public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto) {
+    public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto, Place place ) {
         Log.e(TAG, "sending notification");
+        Intent notificationIntent = new Intent(this, WebViewers.class);
+
+        notificationIntent.putExtra("place_name", place.getName());
+        notificationIntent.putExtra("place_id", place.getId());
+        notificationIntent.putExtra("place_lat", place.getLatLng().latitude);
+        notificationIntent.putExtra("place_long", place.getLatLng().longitude);
+
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        PendingIntent intent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(smallIcon)
@@ -71,6 +85,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
                         .setLargeIcon(largeIcon)
                         .setPriority(1) // High Priority: should enable heads-up notification
                         .setColor(Color.argb(0, 50, 200, 200))
+                        .setContentIntent(intent)
                         .extend(new NotificationCompat.WearableExtender().setBackground(backgroundPhoto));
 
         // Set an ID for the notification
@@ -200,13 +215,13 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
                     Place frozen = best.getPlace().freeze();
                     Log.e(TAG,"before photo task");
                     likelyPlaces.release();
-                    placePhotosTask(frozen.getId(), (String) frozen.getName());
+                    placePhotosTask(frozen.getId(), (String) frozen.getName(),frozen);
                     Log.e(TAG,"after photo task");
                 }
         Log.e(TAG,"after callback");
     }
 
-    private void placePhotosTask(String input, final String name) {
+    private void placePhotosTask(String input, final String name, final Place place) {
         final String placeId = input; // Australian Cruise Group
 
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
@@ -228,10 +243,10 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
-                    setNotification(name, byteArray, true);
+                    setNotification(name, byteArray, true, place);
 
                 }else{
-                    setNotification(name, null, false);
+                    setNotification(name, null, false, place);
                     Log.e(TAG,"finished async task");
                 }
             }
