@@ -31,12 +31,15 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MyService extends Service implements GoogleApiClient.OnConnectionFailedListener {
     private GoogleApiClient mGoogleApiClient;
     private Bitmap placePhoto = null;
-    String hardcodedContent = "The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
+    String hardcodedContent = ""; //"The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
     // Acquire a reference to the system Location Manager
     private LocationManager locationManager = null;
     private LocationListener locationListener = null;
@@ -44,8 +47,12 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     PlaceFilter filter = new PlaceFilter();
     public MyService() {
     }
+    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technolgy", "MIT Chapel",
+            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
+            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics", "MIT Stata Center",
+            "Wang Fitness Center","Delta Kappa Epsilon");
 
-    private void setNotification(String name, byte[] picture, boolean hasPicture) {
+    private void setNotification(String name, String address, byte[] picture, boolean hasPicture) {
         mGoogleApiClient.disconnect();
         Bitmap photo = null;
         if (hasPicture) {
@@ -57,8 +64,10 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             //  sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
         }
         Log.e(TAG, "setting notification");
-        sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
+        sendNotification(R.drawable.notification_icon, name, address, photo, photo);
     }
+
+
 
 
     public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto) {
@@ -130,7 +139,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
-        int time = 1000 * 60 * 60;
+        int time = 6000;// * 60 * 60;
         int distance = 50;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -169,7 +178,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getData() {
-        Log.e(TAG,"in data");
+        Log.e(TAG,"in getData");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -188,25 +197,34 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
         Log.e(TAG,"waiting for places");
         PlaceLikelihoodBuffer likelyPlaces = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, filter).await();
-        Log.e(TAG,"before callback");
-                Log.e(TAG,"callback");
-                if (likelyPlaces.getCount() > 0){
-                    Log.e(TAG,"got places");
-                    PlaceLikelihood best = likelyPlaces.get(0);
-                    if (likelyPlaces.getCount()>1) {
-                        best = likelyPlaces.get(1);
-                    }
-                    Log.e(TAG," before frozen place");
-                    Place frozen = best.getPlace().freeze();
-                    Log.e(TAG,"before photo task");
-                    likelyPlaces.release();
-                    placePhotosTask(frozen.getId(), (String) frozen.getName());
-                    Log.e(TAG,"after photo task");
-                }
-        Log.e(TAG,"after callback");
+
+        ArrayList<Place> result = new ArrayList<>();
+
+        for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+            if (landmarks.contains(placeLikelihood.getPlace().getName())){
+                result.add(placeLikelihood.getPlace().freeze());
+            }
+           /* Log.i(TAG, String.format("Place '%s' has likelihood: %g",
+                    placeLikelihood.getPlace().getName(),
+                    placeLikelihood.getLikelihood()));*/
+        }
+        likelyPlaces.release();
+        Log.e(TAG,"messing with results");
+        if (result.size() > 0){
+            Place best = result.get(0);
+            Log.e(TAG,"got places");
+            //PlaceLikelihood best = likelyPlaces.get(0);
+            if (result.size() > 1) {
+                best = result.get(1);
+            }
+            Log.e(TAG,"before photo task");
+            placePhotosTask(best.getId(), (String) best.getName(), (String) best.getAddress());
+            Log.e(TAG,"after photo task");
+        }
+        Log.e(TAG,"end getDAta");
     }
 
-    private void placePhotosTask(String input, final String name) {
+    private void placePhotosTask(String input, final String name, final String address) {
         final String placeId = input; // Australian Cruise Group
 
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
@@ -228,10 +246,10 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     placePhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
-                    setNotification(name, byteArray, true);
+                    setNotification(name, address, byteArray, true);
 
                 }else{
-                    setNotification(name, null, false);
+                    setNotification(name, address, null, false);
                     Log.e(TAG,"finished async task");
                 }
             }
