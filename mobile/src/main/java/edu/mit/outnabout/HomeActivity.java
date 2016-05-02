@@ -90,10 +90,10 @@ public class HomeActivity extends AppCompatActivity implements
         if (!exploring) {
             serviceIntent = new Intent(this, MyService.class);
             startService(serviceIntent);
-            text.setText("@string/geofence_done_text");
+            text.setText(R.string.geofence_done_text);
         }else{
             stopService(serviceIntent);
-            text.setText("@string/geofence_start_text");
+            text.setText(R.string.geofence_start_text);
         }
         exploring = !exploring;
     }
@@ -114,7 +114,7 @@ public class HomeActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             Button text = (Button) findViewById(R.id.geofence_button);
-            text.setText("@string/geofence_done_text");
+            text.setText(R.string.geofence_done_text);
             if (resultCode == Activity.RESULT_OK) {
                 name = data.getStringExtra("name");
                 byte[] byteArray = getIntent().getByteArrayExtra("photo");
@@ -162,7 +162,8 @@ public class HomeActivity extends AppCompatActivity implements
         Button nearMeButton = (Button) findViewById(R.id.button2);
         Button acheveButton = (Button) findViewById(R.id.achevButton);
 
-        mGeofencesButton.setText(Html.fromHtml("Begin Exploring<br/><small>Let OutNAbout remind you when you are near something cool.</small>"));
+//        mGeofencesButton.setText(Html.fromHtml("Begin Exploring<br/><small>Let OutNAbout remind you when you are near something cool.</small>"));
+        mGeofencesButton.setText(R.string.test_string);
         nearMeButton.setText(Html.fromHtml("What's Near Me<br/><small>Click to get a list of tourist attractions nearby.</small>"));
         acheveButton.setText(Html.fromHtml("What have I seen<br/><small>Click to see a list of places that you've been to.</small>"));
 
@@ -178,7 +179,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
-        toggleGeofenceButtonText();
+//        toggleGeofenceButtonText();
 
         // Get the geofences used. Geofence data is hard coded in this sample.
         populateGeofenceList();

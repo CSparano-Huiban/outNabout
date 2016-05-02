@@ -161,7 +161,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
 
             }
             nearMeCustomList listAdapter = new nearMeCustomList(this, nameList, addressList, idList, mGoogleApiClient);
-
+            Log.e("work?","The list view called");
             theListView.setAdapter(listAdapter);
         }
 
@@ -220,88 +220,10 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                     }
                     likelyPlaces.release();
                 }
+                Log.e("work?", "I hope i only get called once");
                 searchNearMeSetUp();
             }
         });
 
-    }
-    private void placePhotosTask(String input) {
-        final String placeId = input; // Australian Cruise Group
-        final ImageView mImageView = (ImageView) findViewById(R.id.locationImage);
-        // Create a new AsyncTask that displays the bitmap and attribution once loaded.
-        new PhotoTask(mImageView.getWidth(), mImageView.getHeight()) {
-            @Override
-            protected void onPreExecute() {
-                // Display a temporary image to show while bitmap is loading.
-                //mImageView.setImageResource(R.drawable.empty_photo);
-            }
-
-            @Override
-            protected void onPostExecute(AttributedPhoto attributedPhoto) {
-                if (attributedPhoto != null) {
-                    // Photo has been loaded, display it.
-                    mImageView.setImageBitmap(attributedPhoto.bitmap);
-                }
-            }
-        }.execute(placeId);
-    }
-    abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
-
-        private int mHeight;
-
-        private int mWidth;
-
-        public PhotoTask(int width, int height) {
-            mHeight = height;
-            mWidth = width;
-        }
-
-        /**
-         * Loads the first photo for a place id from the Geo Data API.
-         * The place id must be the first (and only) parameter.
-         */
-        @Override
-        protected AttributedPhoto doInBackground(String... params) {
-            if (params.length != 1) {
-                return null;
-            }
-            final String placeId = params[0];
-            AttributedPhoto attributedPhoto = null;
-
-            PlacePhotoMetadataResult result = Places.GeoDataApi
-                    .getPlacePhotos(mGoogleApiClient, placeId).await();
-
-            if (result.getStatus().isSuccess()) {
-                PlacePhotoMetadataBuffer photoMetadataBuffer = result.getPhotoMetadata();
-                if (photoMetadataBuffer.getCount() > 0 && !isCancelled()) {
-                    // Get the first bitmap and its attributions.
-                    PlacePhotoMetadata photo = photoMetadataBuffer.get(0);
-                    CharSequence attribution = photo.getAttributions();
-                    // Load a scaled bitmap for this photo.
-                    Bitmap image = photo.getScaledPhoto(mGoogleApiClient, mWidth, mHeight).await()
-                            .getBitmap();
-
-                    attributedPhoto = new AttributedPhoto(attribution, image);
-                }
-                // Release the PlacePhotoMetadataBuffer.
-                photoMetadataBuffer.release();
-            }
-            return attributedPhoto;
-        }
-
-        /**
-         * Holder for an image and its attribution.
-         */
-        class AttributedPhoto {
-
-            public final CharSequence attribution;
-
-            public final Bitmap bitmap;
-
-            public AttributedPhoto(CharSequence attribution, Bitmap bitmap) {
-                this.attribution = attribution;
-                this.bitmap = bitmap;
-            }
-        }
     }
 }
