@@ -83,7 +83,7 @@
         </activity>
         <activity
             android:name=".WebViewers"
-            android:label="@string/title_activity_web_viewers"
+            android:label="Out'N'About"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".potential_home"
@@ -94,7 +94,7 @@
 
         <activity
             android:name=".acheve"
-            android:label="@string/title_activity_acheve"
+            android:label="What have I seen?"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
