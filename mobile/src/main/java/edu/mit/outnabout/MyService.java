@@ -60,6 +60,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
         sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
     }
 
+    
     public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto) {
         Log.e(TAG, "sending notification");
         NotificationCompat.Builder mBuilder =
@@ -129,8 +130,8 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
-        int time = 6000;
-        int distance = 50;
+        int time = 6000;// * 60 * 60;
+        int distance = 0;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -142,7 +143,16 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             return;
         }
         if (locationManager != null ) {
+          /*  if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)){
+
+                Log.e(TAG, "using network");
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
+        } else {*/
+            if (locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)){
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, locationListener);
+                Log.e(TAG, "using gps");
+            }
+
         }
     }
 
