@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.app.NotificationCompat;
@@ -127,6 +128,12 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Get the UI widget.
         mGeofencesButton = (Button) findViewById(R.id.geofence_button);
+        Button nearMeButton = (Button) findViewById(R.id.button2);
+        Button acheveButton = (Button) findViewById(R.id.achevButton);
+
+        mGeofencesButton.setText(Html.fromHtml("Begin Exploring<br/><small>Let OutNAbout remind you when you are near something cool.</small>"));
+        nearMeButton.setText(Html.fromHtml("What's Near Me<br/><small>Click to get a list of tourist attractions nearby.</small>"));
+        acheveButton.setText(Html.fromHtml("What have I seen<br/><small>Click to see a list of places that you've been to.</small>"));
 
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<Geofence>();
@@ -147,18 +154,20 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Kick off the request to build GoogleApiClient.
         buildGoogleApiClient();
+
     }
 
     /**
      * Ensures that only one button is enabled at any time. The Add Geofences button is enabled
      * if the user hasn't yet added geofences. The Remove Geofences button is enabled if the
      * user has added geofences.
+     *
      */
     private void toggleGeofenceButtonText() {
         if (mGeofencesAdded) {
-            mGeofencesButton.setText(R.string.geofence_done_text);
+            mGeofencesButton.setText(Html.fromHtml("I am done exploring<br/><small>Stop OutNabout from sending notifications.</small>"));
         } else {
-            mGeofencesButton.setText(R.string.geofence_start_text);
+            mGeofencesButton.setText(Html.fromHtml("Begin Exploring<br/><small>Let OutNAbout remind you when you are near something cool.</small>"));
         }
     }
 
