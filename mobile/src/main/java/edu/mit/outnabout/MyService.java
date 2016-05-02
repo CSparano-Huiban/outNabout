@@ -50,8 +50,9 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
     private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technolgy", "MIT Chapel",
             "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
-            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics", "MIT Stata Center",
+            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
             "Wang Fitness Center","Delta Kappa Epsilon");
+//    "MIT Stata Center",
 
     private void setNotification(String name, byte[] picture, boolean hasPicture, Place place) {
         mGoogleApiClient.disconnect();
@@ -152,7 +153,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
-        int time = 6000 * 60 * 60;
+        int time = 30000; //* 60 * 60;
         int distance = 30;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
