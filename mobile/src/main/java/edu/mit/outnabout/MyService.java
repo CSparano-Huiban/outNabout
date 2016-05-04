@@ -47,10 +47,11 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     PlaceFilter filter = new PlaceFilter();
     public MyService() {
     }
-    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technolgy", "MIT Chapel",
-            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
-            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
-            "Wang Fitness Center","MIT Stata Center","Delta Kappa Epsilon");
+//    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology", "MIT Chapel",
+//            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
+//            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
+//            "Wang Fitness Center","MIT Stata Center","Delta Kappa Epsilon");
+    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology");
 
     private void setNotification(String name, byte[] picture, boolean hasPicture, Place place) {
         mGoogleApiClient.disconnect();
@@ -85,7 +86,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
         notificationIntent.putExtra("place_long", place.getLatLng().longitude);
 
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP );
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         Log.e(myTag,notificationIntent.getExtras().getString("place_name"));
 
