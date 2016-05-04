@@ -54,7 +54,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_viewers);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         Bundle extras = getIntent().getExtras();
         titleTextView = (TextView) findViewById(R.id.locationTitle);
         descriptionTextView = (TextView) findViewById(R.id.locationDescription);
@@ -70,16 +70,14 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
         if (extras == null) {
             displayDefaults();
         }else{
+            String myTag = "Debug notif in viewers";
+            Log.e(myTag, extras.getString("place_name"));
+            Log.e(myTag, extras.getString("place_id"));
+            Log.e(myTag, String.valueOf(extras.getDouble("place_lat")));
+            Log.e(myTag, String.valueOf(extras.getDouble("place_long")));
+
             displayFromExtras(extras);
         }
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
     @Override
     protected void onStop(){

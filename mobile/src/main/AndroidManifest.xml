@@ -60,12 +60,12 @@
             android:label="Out'N'About"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".potential_home"
+            android:name=".PotentialHome"
             android:label="@string/title_activity_potential_home"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".acheve"
+            android:name=".Achieve"
             android:label="What have I seen?"
             android:theme="@style/AppTheme.NoActionBar" />
 

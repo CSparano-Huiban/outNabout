@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import android.widget.ListView;
 
-public class acheve extends AppCompatActivity {
+public class Achieve extends AppCompatActivity {
     ListView list;
     String[] locationName = {
             "Boston",
@@ -44,12 +44,12 @@ public class acheve extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_acheve);
+        setContentView(R.layout.activity_achieve);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        AcheveCustomList adapter = new
-                AcheveCustomList(acheve.this, locationName, imageId, historic, modern, total);
+        AchieveCustomList adapter = new
+                AchieveCustomList(Achieve.this, locationName, imageId, historic, modern, total);
         list = (ListView)findViewById(R.id.acheveList);
         if(list != null)
             list.setAdapter(adapter);

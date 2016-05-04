@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.ResultCallback;
@@ -23,8 +22,6 @@ public class HomeActivity extends AppCompatActivity implements
     /**
      * Provides the entry point to Google Play services.
      */
-    protected GoogleApiClient mGoogleApiClient;
-
     // Button for toggling the process of turning the GPS search on and off.
     private TextView mGPSLargeText;
     private TextView mGPSSmallText;
@@ -48,7 +45,7 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     public void moveToMaps(View view) {
-        Intent intent = new Intent(this, potential_home.class);
+        Intent intent = new Intent(this, PotentialHome.class);
         startActivity(intent);
     }
 
@@ -100,7 +97,7 @@ public class HomeActivity extends AppCompatActivity implements
     public void onResult(Status status) {}
 
     public void acheveClicked(View view) {
-        Intent intent = new Intent(this, acheve.class);
+        Intent intent = new Intent(this, Achieve.class);
         startActivity(intent);
     }
 }

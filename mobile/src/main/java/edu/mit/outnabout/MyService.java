@@ -70,6 +70,14 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto, Place place) {
         Log.e(TAG, "sending notification");
         Intent notificationIntent = new Intent(this, WebViewers.class);
+        String myTag = "Debug notif in service";
+
+        Log.e(myTag, title);
+        Log.e(myTag, contentText);
+        Log.e(myTag, (String) place.getName());
+        Log.e(myTag, place.getId());
+        Log.e(myTag, String.valueOf(place.getLatLng().latitude));
+        Log.e(myTag, String.valueOf(place.getLatLng().longitude));
 
         notificationIntent.putExtra("place_name", place.getName());
         notificationIntent.putExtra("place_id", place.getId());
@@ -77,10 +85,12 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
         notificationIntent.putExtra("place_long", place.getLatLng().longitude);
 
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP );
+
+        Log.e(myTag,notificationIntent.getExtras().getString("place_name"));
 
         PendingIntent intent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
+                notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

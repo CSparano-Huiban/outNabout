@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class nearMeCustomList extends ArrayAdapter<String>{
+public class NearMeCustomList extends ArrayAdapter<String>{
     private final FragmentActivity context;
     private final List<String> locationNames;
     private final List<String> addresses;
     String myTag = "Christopher Sparano";
 
-    public nearMeCustomList(FragmentActivity context, List<String> locationNames, List<String> addresses) {
+    public NearMeCustomList(FragmentActivity context, List<String> locationNames, List<String> addresses) {
         super(context, R.layout.near_me_cell, locationNames);
         this.context = context;
         this.locationNames = locationNames;
