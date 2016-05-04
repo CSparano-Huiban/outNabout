@@ -1,11 +1,10 @@
 package edu.mit.outnabout;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+
 import android.widget.ListView;
 
 public class acheve extends AppCompatActivity {
@@ -51,8 +50,9 @@ public class acheve extends AppCompatActivity {
 
         AcheveCustomList adapter = new
                 AcheveCustomList(acheve.this, locationName, imageId, historic, modern, total);
-        list=(ListView)findViewById(R.id.acheveList);
-        list.setAdapter(adapter);
+        list = (ListView)findViewById(R.id.acheveList);
+        if(list != null)
+            list.setAdapter(adapter);
     }
 
 }

@@ -39,7 +39,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
     List<LatLng> latLongList;
     List<String> addressList;
     private GoogleApiClient mGoogleApiClient;
-    private static final String TAG = GooglePlaces.class.getSimpleName();
+    private static final String TAG = "PLACES_LIST";
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)

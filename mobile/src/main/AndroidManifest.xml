@@ -42,20 +42,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDEzVR3aVTI9PN1PN2XR2_HuzdHvkynb_I" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.mit.outnabout.HomeActivity" />
-        </activity>
-        <activity
-            android:name=".GooglePlaces"
-            android:label="GP">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.mit.outnabout.HomeActivity" />
-        </activity>
         <activity android:name=".HomeActivity"
             android:screenOrientation="portrait">
 
