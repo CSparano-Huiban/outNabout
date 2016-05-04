@@ -40,8 +40,7 @@ import java.util.List;
 public class MyService extends Service implements GoogleApiClient.OnConnectionFailedListener {
     private GoogleApiClient mGoogleApiClient;
     private Bitmap placePhoto = null;
-    String hardcodedContent = ""; //"The Ray & Maria Stata Center\n\n1/10 MIT locations discovered";
-    // Acquire a reference to the system Location Manager
+
     private LocationManager locationManager = null;
     private LocationListener locationListener = null;
     private static final String TAG = "ServiceExample";
@@ -51,8 +50,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technolgy", "MIT Chapel",
             "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
             "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
-            "Wang Fitness Center","Delta Kappa Epsilon");
-//    "MIT Stata Center",
+            "Wang Fitness Center","MIT Stata Center","Delta Kappa Epsilon");
 
     private void setNotification(String name, byte[] picture, boolean hasPicture, Place place) {
         mGoogleApiClient.disconnect();
@@ -63,14 +61,13 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             } else {
                 photo = BitmapFactory.decodeResource(getResources(), R.drawable.mit);
             }
-            //  sendNotification(R.drawable.notification_icon, name, hardcodedContent, photo, photo);
         }
-        Log.e(TAG, "setting notification");
+
         sendNotification(R.drawable.notification_icon, name, place.getAddress().toString(), photo, photo, place);
     }
 
     
-    public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto, Place place ) {
+    public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto, Place place) {
         Log.e(TAG, "sending notification");
         Intent notificationIntent = new Intent(this, WebViewers.class);
 
@@ -107,11 +104,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and a connection to Google APIs
-        // could not be established. Display an error message, or handle
-        // the failure silently
-
-        // ...
     }
 
     @Override
@@ -156,26 +148,10 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
         int time = 30000; //* 60 * 60;
         int distance = 30;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         if (locationManager != null ) {
-          /*  if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)){
-
-                Log.e(TAG, "using network");
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
-        } else {*/
-            //if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)){
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, locationListener);
-                Log.e(TAG, "using network");
-         //   }
-
         }
     }
 
@@ -194,13 +170,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     public void getData() {
         Log.e(TAG,"in getData");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             Log.e(TAG,"returned early");
             return;
         }
@@ -312,9 +281,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             return attributedPhoto;
         }
 
-        /**
-         * Holder for an image and its attribution.
-         */
         class AttributedPhoto {
             public final CharSequence attribution;
             public final Bitmap bitmap;

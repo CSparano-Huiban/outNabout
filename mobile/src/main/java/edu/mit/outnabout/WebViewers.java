@@ -6,14 +6,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -122,7 +118,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
         placePhotosTask(locationId);
         currentLatitude = String.valueOf(extras.getDouble("place_lat"));
         currentLongitude = String.valueOf(extras.getDouble("place_long"));
-
         currentDescription = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
         titleTextView.setText(currentLocation);
         descriptionTextView.setText(currentDescription);
@@ -143,7 +138,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
 
     public void mapClick(View view) {
         String uriString = String.format("geo:0,0?q=" + currentLatitude + ","+ currentLongitude);
-        Log.v("I hate the world",uriString);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
         startActivity(intent);
     }
@@ -155,13 +149,11 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             protected void onPreExecute() {
                 currentLocationImage = BitmapFactory.decodeResource(getResources(), R.drawable.placeholderimage);
                 locationImage.setImageBitmap(currentLocationImage);
-                Log.v("I hate the world", "I am trying to work on photos");
             }
 
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null) {
-                    Log.v("I hate the world", "This sucks");
                     locationImage.setImageBitmap(attributedPhoto.bitmap);
                 }
             }
@@ -170,7 +162,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.v("I hate the world","I failed");
     }
 
     abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
@@ -246,6 +237,7 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
             new CallAPI().execute(apiUrl);
         }
     }
+
     private class CallAPI extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -265,8 +257,6 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                 urlConnection = (HttpURLConnection) url.openConnection();
                 InputStreamReader reader = new InputStreamReader(urlConnection.getInputStream());
 
-                Log.i(LOG_MESSAGE, "got input stream");
-
                 int read;
                 while ((read = reader.read(buf)) != -1) {
                     sb.append(buf, 0, read);
@@ -278,53 +268,42 @@ public class WebViewers extends FragmentActivity implements GoogleApiClient.OnCo
                     urlConnection.disconnect();
                 }
                 try {
-                    // releases any system resources associated with the stream
                     if (in != null)
                         in.close();
                 } catch (IOException e) {
                     Log.i(LOG_MESSAGE + " Error:", e.getMessage());
                 }
             }
-            Log.i(LOG_MESSAGE, "Finished reading");
             return sb.toString();
         }
 
 
         protected void onPostExecute(String result) {
-            Log.i(LOG_MESSAGE, "starting onPostExecute");
-
             JSONObject foodEntries;
             JSONObject page;
             JSONObject pageFromId;
             String description = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
 
-            // separate this out so people can work on it.
             try {
                 JSONObject jObject = new JSONObject(result);
-                Log.i(LOG_MESSAGE, jObject.toString());
                 foodEntries = jObject.getJSONObject("query");
-                Log.i(LOG_MESSAGE, foodEntries.toString());
                 page = foodEntries.getJSONObject("pages");
-                Log.i(LOG_MESSAGE, page.toString());
                 pageFromId = page.getJSONObject((String) page.names().get(0));
-                Log.i(LOG_MESSAGE, pageFromId.toString());
                 description = pageFromId.getString("extract");
-                Log.i(LOG_MESSAGE, description);
+
                 if(description.equals("")){
                     description = "Our description for " + currentLocation + " is not available yet please use the google button below to learn more";
                 }
-
             } catch (JSONException e) {
                 Log.e(LOG_MESSAGE, "Could not do JSON result");
                 Log.i(LOG_MESSAGE, e.getMessage());
             }
-
-            showFoodEntries1(description);
+            showWikiDescription(description);
         }
 
     }
 
-    private void showFoodEntries1(String description) {
+    private void showWikiDescription(String description) {
         Log.e("CSpan",description);
         TextView tv = (TextView) findViewById(R.id.locationDescription);
         tv.setText(description);
