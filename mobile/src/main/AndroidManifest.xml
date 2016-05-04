@@ -18,15 +18,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission." />
-
     android.permission.GET_TASKS
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -41,29 +40,28 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDEzVR3aVTI9PN1PN2XR2_HuzdHvkynb_I" />
-
+        
         <activity android:name=".HomeActivity"
             android:screenOrientation="portrait">
-
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
             <intent-filter>
                 <action android:name="myEvent" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".WebViewers"
-            android:label="Out'N'About"
+            android:label="Out&apos;N&apos;About"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PotentialHome"
             android:label="@string/title_activity_potential_home"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".Achieve"
             android:label="What have I seen?"
@@ -72,7 +70,18 @@
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

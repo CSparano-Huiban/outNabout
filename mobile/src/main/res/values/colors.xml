@@ -9,4 +9,5 @@
     <color name="backgroundColor">#444</color>
     <color name="textColor1">#CDD882</color>
     <color name="textColor2">#F7F7D2</color>
+    <color name="splashColor">#b3e463</color>
 </resources>
