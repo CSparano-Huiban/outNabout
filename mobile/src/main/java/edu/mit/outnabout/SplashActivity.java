@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         {
             public void run() {
                 try {
-                    sleep(5000); // show splash screen for at least 5 seconds.
+                    sleep(3000); // show splash screen for at least 3 seconds.
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
