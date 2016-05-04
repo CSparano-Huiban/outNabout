@@ -22,15 +22,6 @@
         android:textColor="#000000"
         android:visibility="gone" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Debug Notification"
-        android:id="@+id/button3"
-        android:onClick="notify"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone" />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

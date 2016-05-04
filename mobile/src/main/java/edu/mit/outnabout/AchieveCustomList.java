@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AcheveCustomList extends ArrayAdapter<String>{
+public class AchieveCustomList extends ArrayAdapter<String>{
     private final Activity context;
     private final String[] locationName;
     private final Integer[] imageId;
@@ -20,8 +20,8 @@ public class AcheveCustomList extends ArrayAdapter<String>{
     private final String[] modern;
     private final String[] total;
 
-    public AcheveCustomList(Activity context, String[] locationName, Integer[] imageId, String[] historic, String[] modern, String[] total) {
-        super(context, R.layout.acheve_cell, locationName);
+    public AchieveCustomList(Activity context, String[] locationName, Integer[] imageId, String[] historic, String[] modern, String[] total) {
+        super(context, R.layout.achieve_cell, locationName);
         this.context = context;
         this.locationName = locationName;
         this.imageId = imageId;
@@ -39,7 +39,7 @@ public class AcheveCustomList extends ArrayAdapter<String>{
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.acheve_cell, null, true);
+        View rowView = inflater.inflate(R.layout.achieve_cell, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.acheveLocation);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.acheveImage);

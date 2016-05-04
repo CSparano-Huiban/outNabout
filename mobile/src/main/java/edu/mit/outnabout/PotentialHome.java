@@ -32,14 +32,14 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-public class potential_home extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class PotentialHome extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     List<String> nameList;
     List<String> idList;
     List<LatLng> latLongList;
     List<String> addressList;
     private GoogleApiClient mGoogleApiClient;
-    private static final String TAG = GooglePlaces.class.getSimpleName();
+    private static final String TAG = "PLACES_LIST";
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
@@ -93,7 +93,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
     ArrayList<Place> results = new ArrayList<Place>();
 
     public void searchNearMeSetUp() {
-        final potential_home tempThis = this;
+        final PotentialHome tempThis = this;
 
         ListView theListView = (ListView) findViewById(R.id.listView);
 
@@ -126,7 +126,7 @@ public class potential_home extends FragmentActivity implements GoogleApiClient.
                 }
 
             }
-            nearMeCustomList listAdapter = new nearMeCustomList(this, nameList, addressList);
+            NearMeCustomList listAdapter = new NearMeCustomList(this, nameList, addressList);
 
             theListView.setAdapter(listAdapter);
         }

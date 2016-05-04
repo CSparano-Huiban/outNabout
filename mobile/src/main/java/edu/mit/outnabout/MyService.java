@@ -47,10 +47,11 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     PlaceFilter filter = new PlaceFilter();
     public MyService() {
     }
-    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technolgy", "MIT Chapel",
-            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
-            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
-            "Wang Fitness Center","MIT Stata Center","Delta Kappa Epsilon");
+//    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology", "MIT Chapel",
+//            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
+//            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
+//            "Wang Fitness Center","MIT Stata Center","Delta Kappa Epsilon");
+    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology");
 
     private void setNotification(String name, byte[] picture, boolean hasPicture, Place place) {
         mGoogleApiClient.disconnect();
@@ -70,6 +71,14 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     public void sendNotification(int smallIcon, String title, String contentText, Bitmap largeIcon, Bitmap backgroundPhoto, Place place) {
         Log.e(TAG, "sending notification");
         Intent notificationIntent = new Intent(this, WebViewers.class);
+        String myTag = "Debug notif in service";
+
+        Log.e(myTag, title);
+        Log.e(myTag, contentText);
+        Log.e(myTag, (String) place.getName());
+        Log.e(myTag, place.getId());
+        Log.e(myTag, String.valueOf(place.getLatLng().latitude));
+        Log.e(myTag, String.valueOf(place.getLatLng().longitude));
 
         notificationIntent.putExtra("place_name", place.getName());
         notificationIntent.putExtra("place_id", place.getId());
@@ -79,8 +88,10 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
+        Log.e(myTag,notificationIntent.getExtras().getString("place_name"));
+
         PendingIntent intent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
+                notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -145,7 +156,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
-        int time = 30000; //* 60 * 60;
+        int time = 6000; //* 60 * 60;
         int distance = 30;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
