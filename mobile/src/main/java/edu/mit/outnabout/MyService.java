@@ -175,7 +175,13 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     @Override
     public void onDestroy() {
         mGoogleApiClient.disconnect();
-        Log.i(TAG, "Service onDestroy");
+        try{
+            locationManager.removeUpdates(locationListener);
+            locationManager = null;
+            Log.i(TAG, "Service onDestroy succeeded.");
+        } catch (SecurityException e){
+            Log.e(TAG, "Attempted to destroy location manager.");
+        }
     }
 
     public void getData() {
@@ -215,11 +221,11 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             placePhotosTask(best.getId(), (String) best.getName(), best);
             Log.e(TAG,"after photo task");
         }
-        Log.e(TAG,"end getDAta");
+        Log.e(TAG,"end getData");
     }
 
     private void placePhotosTask(String input, final String name, final Place place) {
-        final String placeId = input; // Australian Cruise Group
+        final String placeId = input;
 
         // Create a new AsyncTask that displays the bitmap and attribution once loaded.
         new PhotoTask(200, 200) {
@@ -227,7 +233,6 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
             protected void onPreExecute() {
 
             }
-
 
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
