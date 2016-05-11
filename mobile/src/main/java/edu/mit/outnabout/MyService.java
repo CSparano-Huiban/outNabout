@@ -47,11 +47,11 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     PlaceFilter filter = new PlaceFilter();
     public MyService() {
     }
-//    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology", "MIT Chapel",
-//            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
-//            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
-//            "Wang Fitness Center","MIT Stata Center","Delta Kappa Epsilon");
-    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology");
+    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology", "MIT Chapel",
+            "MIT Media Lab","David H. Koch Institute for Integrative Cancer Research", "Stratton Student Center",
+            "Morss Hall, Walker Memorial, MIT","Green Bldg", "Research Laboratory of Electronics",
+            "Wang Fitness Center","MIT Stata Center","Delta Kappa Epsilon");
+//    private List<String> landmarks =  Arrays.asList("Massachusetts Institute of Technology");
 
     private void setNotification(String name, byte[] picture, boolean hasPicture, Place place) {
         mGoogleApiClient.disconnect();
@@ -156,7 +156,7 @@ public class MyService extends Service implements GoogleApiClient.OnConnectionFa
     }
 
     public void getLocation() {
-        int time = 6000; //* 60 * 60;
+        int time = 1000 * 60 * 5;
         int distance = 30;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
